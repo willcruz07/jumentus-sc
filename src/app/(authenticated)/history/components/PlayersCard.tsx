@@ -1,5 +1,3 @@
-import { PlayerHistoryCard } from '@/components/PlayersHistoryCard';
-
 export function PlayersCards() {
   return (
     <div className="mt-6 flex flex-col">
@@ -9,9 +7,9 @@ export function PlayersCards() {
           Ordenar por - Gols
         </h1>
       </div>
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <PlayerHistoryCard />
-      </div>
+      </div> */}
     </div>
   );
 }

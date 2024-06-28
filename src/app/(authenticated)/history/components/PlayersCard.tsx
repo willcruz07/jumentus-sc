@@ -7,9 +7,6 @@ export function PlayersCards() {
           Ordenar por - Gols
         </h1>
       </div>
-      {/* <div className="flex flex-col gap-2">
-        <PlayerHistoryCard />
-      </div> */}
     </div>
   );
 }

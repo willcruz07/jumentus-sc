@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
+import withPWAInit from '@ducanh2912/next-pwa';
+
+const withPWA = withPWAInit({
+  dest: 'public',
+});
+
 const nextConfig = {
   headers: async () => {
     return [
@@ -32,26 +38,8 @@ const nextConfig = {
       permanent: true,
     },
   ],
-  // webpack: (config) => {
-  //   if (!config.experiments) {
-  //     config.experiments = {};
-  //   }
-
-  //   config.experiments.asyncWebAssembly = true;
-
-  //   if (
-  //     !config.module.rules.find(
-  //       (rule) => rule.test && rule.test.toString() === '/\\.wasm$/'
-  //     )
-  //   ) {
-  //     config.module.rules.push({
-  //       test: /\.wasm$/,
-  //       type: 'webassembly/async',
-  //     });
-  //   }
-
-  //   return config;
-  // },
 };
 
-export default nextConfig;
+export default withPWA({
+  ...nextConfig,
+});

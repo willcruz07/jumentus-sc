@@ -2,8 +2,10 @@ import React from 'react';
 
 export function MainContainer({ children }: React.PropsWithChildren) {
   return (
-    <main className="flex min-h-screen max-w-2xl flex-col bg-gray-950 p-5">
-      {children}
+    <main className="flex h-screen w-screen items-center justify-center">
+      <div className="flex min-h-screen min-w-full max-w-[932px] flex-col bg-gray-950 p-5">
+        {children}
+      </div>
     </main>
   );
 }

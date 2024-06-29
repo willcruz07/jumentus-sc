@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { Button } from '@/components/Button';
 import { ButtonCard } from '@/components/ButtonCard';
@@ -10,9 +10,20 @@ import { MatchCard } from '@/components/MatchCard';
 
 import { useNavigation } from '@/hook/useNavigation';
 import { ROUTES } from '@/paths';
+import { useAuth } from '@/store/useAuth';
+import { useMatches } from '@/store/useMatches';
 
 export default function Home() {
   const { navigateTo } = useNavigation();
+  const { currentUser } = useAuth();
+  const { startListenerOfOnGoingMatches } = useMatches();
+
+  useEffect(() => {
+    const unsubscribe = startListenerOfOnGoingMatches();
+
+    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleInitPlayersCollection = useCallback(async () => {
     await fetch('/api/create-players', {
@@ -36,18 +47,20 @@ export default function Home() {
           onClick={() => navigateTo(ROUTES.AUTHENTICATED.PLAYERS)}
         />
 
-        <ButtonCard
+        {/* <ButtonCard
           title="Historico"
           subtitle="Verifique o historico das partidas"
           urlIcon="/icon/trophy.svg"
           onClick={() => navigateTo(ROUTES.AUTHENTICATED.HISTORY)}
-        />
+        /> */}
 
-        <Button
-          onClick={handleInitPlayersCollection}
-          text="Inicializar usuarios"
-          variant="solid"
-        />
+        {currentUser?.email === 'will@jumentussc.com' && (
+          <Button
+            onClick={handleInitPlayersCollection}
+            text="Inicializar usuarios"
+            variant="solid"
+          />
+        )}
       </div>
     </MainContainer>
   );

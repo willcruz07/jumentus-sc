@@ -48,6 +48,7 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
         waitingForEvent: true,
         inMatchingVote: false,
         date: Timestamp.fromDate(data.date) as any,
+        createdAt: dayjs().toDate(),
         matchPlayers: {
           players: data.players.players,
           goalKeepers: data.players.goalKeepers,
@@ -87,9 +88,9 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
           ...data.players.goalKeepers,
           ...data.players.players,
         ].map((player) => ({
-          fullName: allPlayers.find((p) => p.name === player)?.fullName ?? '',
-          name: player,
-          assist: 0,
+          fullName: player,
+          name: allPlayers.find((p) => p.fullName === player)?.name ?? player,
+          assists: 0,
           goals: 0,
           saves: 0,
           tackles: 0,
@@ -130,6 +131,16 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
     const details = useMatches.getState();
     setLoadingState(useMatches, 'restartMatch', true);
     try {
+      const pauseDuration = dayjs().diff(
+        dayjs(details.matchInProgress?.pausedTime),
+        'second'
+      );
+
+      const newStartTime = dayjs(details.matchInProgress?.startTime).add(
+        pauseDuration,
+        'second'
+      );
+
       const docRef = doc(
         dbFirestore,
         FIREBASE.COLLECTIONS.MATCHES,
@@ -139,7 +150,9 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
       await updateDoc(docRef, {
         matchInProgress: {
           ...details.matchInProgress,
+          pausedTime: null,
           started: true,
+          startTime: newStartTime.toDate(), // atualize o startTime para o novo horário ajustado
         },
       });
     } catch (error) {
@@ -164,7 +177,7 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
         matchInProgress: {
           ...details.matchInProgress,
           started: false,
-          pausedTime: dayjs(dayjs().format('YYYY-MM-DD HH:mm:ss')).toDate(),
+          pausedTime: dayjs().toDate(),
         },
       });
     } catch (error) {
@@ -252,7 +265,7 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
           {
             ...player,
             goals: player.goals,
-            assist: player.assist,
+            assists: player.assists,
             tackles: player.tackles,
             saves: player.saves,
           },
@@ -294,6 +307,8 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
   },
 
   setFinishMatch: async () => {
+    const setPlayer = usePlayers.getState().setPlayers;
+
     const details = useMatches.getState();
     setLoadingState(useMatches, 'setFinishMatch', true);
 
@@ -341,6 +356,24 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
       };
     };
 
+    const teamScoresOnTheDay = {
+      ...details.teamScoresOnTheDay,
+      [details.matchInProgress?.teams[0] as string]: {
+        ...calculateTeamScores(details, 0),
+      },
+      [details.matchInProgress?.teams[1] as string]: {
+        ...calculateTeamScores(details, 1),
+      },
+    };
+
+    for (const player of details.playersScoreOnTheDay) {
+      await setPlayer({
+        id: player?.fullName.toLowerCase().replace(' ', '_'),
+        matches: 1,
+        ...player,
+      });
+    }
+
     try {
       const docRef = doc(
         dbFirestore,
@@ -357,15 +390,7 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
             endTime: dayjs(dayjs().format('YYYY-MM-DD HH:mm:ss')).toDate(),
           },
         ],
-        teamScoresOnTheDay: {
-          ...details.teamScoresOnTheDay,
-          [details.matchInProgress?.teams[0] as string]: {
-            ...calculateTeamScores(details, 0),
-          },
-          [details.matchInProgress?.teams[1] as string]: {
-            ...calculateTeamScores(details, 1),
-          },
-        },
+        teamScoresOnTheDay: teamScoresOnTheDay,
         matchInProgress: null,
       });
     } catch (error) {
@@ -421,7 +446,7 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
   startListenerOfOnGoingMatches: () => {
     const q = query(
       collection(dbFirestore, FIREBASE.COLLECTIONS.MATCHES),
-      orderBy('date', 'asc'),
+      orderBy('createdAt', 'desc'),
       limit(1)
     );
 

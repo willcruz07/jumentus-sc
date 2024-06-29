@@ -40,7 +40,7 @@ export function PlayersCard({
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">Assist.</h5>
+            <h5 className="font-sans text-sm font-semibold">assists.</h5>
             <h6 className="font-sans text-sm text-gray-400">{assists}</h6>
           </div>
           <div className="flex flex-col items-center gap-1">

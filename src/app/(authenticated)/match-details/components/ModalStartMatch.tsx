@@ -78,7 +78,7 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-1-time-1"
-                    className="ms-3 block w-full text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 1
                   </label>
@@ -99,7 +99,7 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-2-time-1"
-                    className="ms-3 block w-full text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 2
                   </label>
@@ -120,7 +120,7 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-3-time-1"
-                    className="ms-3 block w-full text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 3
                   </label>

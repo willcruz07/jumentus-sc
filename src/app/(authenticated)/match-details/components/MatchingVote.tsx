@@ -88,13 +88,20 @@ export function MatchingVote() {
 
   return (
     <div className="pt-4">
+      {(!(totals.bestPlayer === bestPlayer.length - 1) ||
+        !(totals.worstPlayers === worstPlayers.length - 1)) && (
+        <h1 className="mb-3 text-center text-gray-500">
+          Realize todos os votos para poder finalizar a votação.
+        </h1>
+      )}
+
       {totals.bestPlayer === bestPlayer.length - 1 &&
         totals.worstPlayers === worstPlayers.length - 1 && (
           <Button
             containerStyle="my-2 mb-6"
             text="Finalizar"
             onClick={handleFinishVotes}
-            variant="outlined"
+            variant="solid"
           />
         )}
 
@@ -147,8 +154,8 @@ export function MatchingVote() {
           ?.sort((a, b) => b.votes - a.votes)
           ?.map((player) => (
             <CardsVotes
-              key={player.name}
-              assist={player.assist}
+              key={player.fullName}
+              assists={player.assists}
               fullName={player.fullName}
               goals={player.goals}
               name={player.name}

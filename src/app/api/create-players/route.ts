@@ -6,6 +6,7 @@ import { playersList } from './playersList';
 export async function POST() {
   try {
     const dbFirestore = firebaseAdmin.firestore();
+    const auth = firebaseAdmin.auth();
 
     await Promise.all(
       playersList.map(async ({ fullName, shortName }) => {
@@ -24,6 +25,10 @@ export async function POST() {
             assists: 0,
             tackles: 0,
             saves: 0,
+          });
+          await auth.createUser({
+            email: `${id}@jumentussc.com`,
+            password: 'jumentus@2024',
           });
           console.log(`Documento ${id} Adicionado`);
         } else {

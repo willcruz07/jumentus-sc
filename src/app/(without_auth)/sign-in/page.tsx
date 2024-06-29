@@ -23,15 +23,25 @@ export default function Home() {
       email: '',
       password: '',
     },
-    onSubmit: () => handleSignIn(),
+    onSubmit: (data) => handleSignIn(data.email, data.password),
   });
 
-  const handleSignIn = useCallback(() => {
+  const handleSignIn = useCallback(
+    (email: string, password: string) => {
+      signIn({
+        email: email,
+        password: password,
+      }).then(() => navigate(ROUTES.AUTHENTICATED.HOME));
+    },
+    [signIn, navigate]
+  );
+
+  const handleSignInGuest = useCallback(() => {
     signIn({
-      email: 'jumentusfc@gmail.com',
-      password: 'jumentus@123456',
+      email: 'guest@jumentussc.com',
+      password: 'Juve@2024',
     }).then(() => navigate(ROUTES.AUTHENTICATED.HOME));
-  }, [signIn, navigate]);
+  }, []);
 
   return (
     <MainContainer>
@@ -56,10 +66,14 @@ export default function Home() {
           onChange={formik.handleChange('password')}
         />
         <Spacing size="XS" direction="X" />
-        <Button variant="solid" onClick={handleSignIn} text="Entrar" />
+        <Button
+          variant="solid"
+          onClick={() => formik.handleSubmit()}
+          text="Entrar"
+        />
         <Button
           variant="outlined"
-          onClick={handleSignIn}
+          onClick={handleSignInGuest}
           text="Acessar sem login"
         />
       </form>

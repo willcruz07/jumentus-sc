@@ -48,6 +48,10 @@ export function ModalConfirmFinishDay({
           <h4 className="mb-6 font-light text-gray-400">
             Ao confirmar o termino da partida os dados não podem ser editados.
           </h4>
+          <h4 className="mb-6 font-semibold text-red-400">
+            Não sera possível voltar após confirmar o termino de todas partidas
+            do dia!!
+          </h4>
 
           <div className="flex gap-4">
             <Button text="Cancelar" variant="outlined" onClick={onCancel} />

@@ -48,6 +48,10 @@ export function ModalConfirmFinishMatch({
           <h4 className="mb-6 font-light text-gray-400">
             Ao confirmar o termino da partida os dados não podem ser editados.
           </h4>
+          <h4 className="mb-6 font-normal text-red-300">
+            Lembrou de editar os dados dos jogadores antes de confirmar o
+            terminar da partida ?
+          </h4>
 
           <div className="flex gap-4">
             <Button text="Cancelar" variant="outlined" onClick={onCancel} />

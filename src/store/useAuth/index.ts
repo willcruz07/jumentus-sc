@@ -48,7 +48,7 @@ export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<
         set({ currentUser: result.user });
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       })
       .finally(() => {
         setLoadingState(useAuth, 'signIn', false);

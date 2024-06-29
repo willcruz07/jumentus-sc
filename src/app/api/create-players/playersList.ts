@@ -4,7 +4,7 @@ export const playersList = [
     shortName: 'Thomaz',
   },
   {
-    fullName: 'Gabriel',
+    fullName: 'Gabriel Carvalho',
     shortName: 'Gabriel',
   },
   {
@@ -16,7 +16,7 @@ export const playersList = [
     shortName: 'Thiago',
   },
   {
-    fullName: 'Cristiano',
+    fullName: 'Cristiano Cardoso',
     shortName: 'Cristiano',
   },
   {
@@ -32,12 +32,8 @@ export const playersList = [
     shortName: 'Renan',
   },
   {
-    fullName: 'Andin',
+    fullName: 'Andin Vasconcelos',
     shortName: 'Andin',
-  },
-  {
-    fullName: 'Andin',
-    shortName: 'Anding',
   },
   {
     fullName: 'André Oliveira',
@@ -52,7 +48,7 @@ export const playersList = [
     shortName: 'Diogo',
   },
   {
-    fullName: 'Felipe',
+    fullName: 'Felipe Morais',
     shortName: 'Felipe',
   },
   {
@@ -69,7 +65,7 @@ export const playersList = [
   },
   {
     fullName: 'Gustavo Ramos',
-    shortName: 'Gustavo Ramos',
+    shortName: 'Gustavo',
   },
   {
     fullName: 'Kawan Gomes',
@@ -84,7 +80,7 @@ export const playersList = [
     shortName: 'Lorran',
   },
   {
-    fullName: 'Luis Guilherme',
+    fullName: 'Luiz Guilherme',
     shortName: 'LG',
   },
   {
@@ -104,7 +100,7 @@ export const playersList = [
     shortName: 'Wellerson',
   },
   {
-    fullName: 'Yago Luiz',
+    fullName: 'Yago Cavalier',
     shortName: 'Yago',
   },
   {
@@ -121,6 +117,6 @@ export const playersList = [
   },
   {
     fullName: 'Miguel Dias',
-    shortName: 'Miguelzinho',
+    shortName: 'Miguel',
   },
 ];

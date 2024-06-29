@@ -87,7 +87,7 @@ export interface IPlayersScoreOnTheDay {
   name: string;
   fullName: string;
   goals: number;
-  assist: number;
+  assists: number;
   tackles: number;
   saves: number;
 }

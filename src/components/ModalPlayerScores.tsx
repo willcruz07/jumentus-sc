@@ -9,7 +9,7 @@ import { CircleMinus, CirclePlus } from 'lucide-react';
 interface IPlayerData
   extends Pick<
     IPlayersScoreOnTheDay,
-    'assist' | 'goals' | 'saves' | 'tackles'
+    'assists' | 'goals' | 'saves' | 'tackles'
   > {}
 type TAction = 'add' | 'subtract';
 
@@ -23,14 +23,14 @@ export function ModalPlayerScore({
   isVisible,
   onCancel,
   onConfirm,
-  assist,
+  assists,
   fullName,
   goals,
   saves,
   tackles,
 }: IProps) {
   const [playerData, setPlayerData] = useState<IPlayerData>({
-    assist: assist,
+    assists: assists,
     goals: goals,
     saves: saves,
     tackles: tackles,
@@ -51,7 +51,7 @@ export function ModalPlayerScore({
   useEffect(() => {
     if (isVisible) {
       setPlayerData({
-        assist: assist,
+        assists: assists,
         goals: goals,
         saves: saves,
         tackles: tackles,
@@ -131,14 +131,14 @@ export function ModalPlayerScore({
               <div className="flex gap-3">
                 <button
                   type="button"
-                  onClick={() => onChangeValue('assist', 'subtract')}
+                  onClick={() => onChangeValue('assists', 'subtract')}
                 >
                   <CircleMinus />
                 </button>
-                <h1 className="text-3xl font-bold">{playerData.assist}</h1>
+                <h1 className="text-3xl font-bold">{playerData.assists}</h1>
                 <button
                   type="button"
-                  onClick={() => onChangeValue('assist', 'add')}
+                  onClick={() => onChangeValue('assists', 'add')}
                 >
                   <CirclePlus />
                 </button>

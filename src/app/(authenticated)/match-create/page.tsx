@@ -12,6 +12,7 @@ import { TextArea } from '@/components/TextArea';
 
 import { useNavigation } from '@/hook/useNavigation';
 import { ROUTES } from '@/paths';
+import { useAuth } from '@/store/useAuth';
 import { useMatches } from '@/store/useMatches';
 import { IPlayersList, ITeams } from '@/store/useMatches/types';
 import { usePlayers } from '@/store/usePlayers';
@@ -31,6 +32,7 @@ export default function MatchCreate() {
   const { startListenerAllPlayers, allPlayers } = usePlayers();
   const { createMatch, loading } = useMatches();
   const { navigateTo } = useNavigation();
+  const { currentUser } = useAuth();
 
   const [playerList, setPlayerList] = useState('');
   const [playersSelected, setPlayersSelected] = useState<IPlayersList>();
@@ -46,6 +48,84 @@ export default function MatchCreate() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // const parseTextToObj = (
+  //   text: string
+  // ): { players: string[]; goalKeepers: string[]; date?: Date } => {
+  //   const lines: string[] = text.split('\n');
+  //   const players: string[] = [];
+  //   const goalKeepers: string[] = [];
+
+  //   let inPlayersSection: boolean = false;
+  //   let inGoalKeepersSection: boolean = false;
+  //   let date = undefined;
+
+  //   lines.forEach((line: string) => {
+  //     if (line.includes('📅')) {
+  //       const dateMatch = line.match(/📆\s*(\d{2}\/\d{2})\s*📅/);
+  //       if (dateMatch) {
+  //         const rawDate: string = dateMatch[1];
+  //         const baseDate = `${rawDate}/${dayjs().year()}`.split('/');
+
+  //         date = new Date(
+  //           Number(baseDate[2]),
+  //           Number(baseDate[1]) - 1,
+  //           Number(baseDate[0])
+  //         );
+  //       }
+  //     }
+  //     // Process players section
+  //     if (line.includes('MENSALISTAS')) {
+  //       inPlayersSection = true;
+  //       inGoalKeepersSection = false;
+  //     }
+
+  //     if (inPlayersSection && line.match(/^\d+/)) {
+  //       const nameMatch = line.match(/-\s*(.+?)\s*(✅|🔁|🔃|❓|🔂)/);
+  //       if (nameMatch) {
+  //         let name: string = nameMatch[1].trim();
+  //         // Handle special cases for replacements
+  //         if (nameMatch[2] === '🔁' || nameMatch[2] === '🔃') {
+  //           const replacementMatch = line.match(/(🔁|🔃)\s*(\S+)/);
+  //           if (replacementMatch) {
+  //             name = replacementMatch[2].trim();
+  //           }
+  //         } else if (nameMatch[2] === '🔂') {
+  //           // Keeping original name for 🔂
+  //         }
+  //         players.push(name);
+  //       }
+  //     }
+
+  //     // End players section if another section starts
+  //     if (line.includes('LEGENDA DOS MENSALISTAS:')) {
+  //       inPlayersSection = false;
+  //     }
+
+  //     // Process goalKeepers section
+  //     if (line.includes('GOLEIROS')) {
+  //       inGoalKeepersSection = true;
+  //     }
+
+  //     if (inGoalKeepersSection && line.match(/^\d+/)) {
+  //       const nameMatch = line.match(/-\s*(.+)/);
+  //       if (nameMatch) {
+  //         const name: string = nameMatch[1].trim();
+  //         goalKeepers.push(name);
+  //       }
+  //     }
+  //     // End goalKeepers section if another section starts
+  //     if (line.includes('LISTA DE ESPERA')) {
+  //       inGoalKeepersSection = false;
+  //     }
+  //   });
+
+  //   return {
+  //     players,
+  //     goalKeepers,
+  //     date,
+  //   };
+  // };
 
   const parseTextToObj = (
     text: string
@@ -84,7 +164,7 @@ export default function MatchCreate() {
           let name: string = nameMatch[1].trim();
           // Handle special cases for replacements
           if (nameMatch[2] === '🔁' || nameMatch[2] === '🔃') {
-            const replacementMatch = line.match(/(🔁|🔃)\s*(\S+)/);
+            const replacementMatch = line.match(/(🔁|🔃)\s*(.+)/);
             if (replacementMatch) {
               name = replacementMatch[2].trim();
             }
@@ -218,6 +298,14 @@ export default function MatchCreate() {
     }
   };
 
+  if (currentUser?.email?.includes('guest')) {
+    return (
+      <MainContainer>
+        <Header canGoBack />
+      </MainContainer>
+    );
+  }
+
   return (
     <MainContainer>
       <Header canGoBack />
@@ -250,9 +338,7 @@ export default function MatchCreate() {
                   key={player}
                   name={player}
                   teams={teams}
-                  fullName={
-                    allPlayers.find((p) => p.name === player)?.fullName ?? ''
-                  }
+                  fullName={player}
                 />
               ))}
             </div>
@@ -270,14 +356,7 @@ export default function MatchCreate() {
                   key={player}
                   name={player}
                   teams={teams}
-                  fullName={
-                    allPlayers.find((p) => {
-                      return (
-                        p.name.trim().toLocaleLowerCase() ===
-                        player.trim().toLowerCase()
-                      );
-                    })?.fullName ?? ''
-                  }
+                  fullName={player}
                 />
               ))}
             </div>
@@ -313,19 +392,19 @@ export default function MatchCreate() {
               {(teams as any)[teamKey].map((player: string) => {
                 const foundPlayer = allPlayers.find((p) => {
                   return (
-                    p.name.trim().toLocaleLowerCase() ===
+                    p.fullName.trim().toLocaleLowerCase() ===
                     player.trim().toLowerCase()
                   );
                 });
 
-                const fullName = foundPlayer ? foundPlayer.fullName : '';
+                const name = foundPlayer ? foundPlayer.name : player;
 
                 return (
                   <ContainerPlayer
                     flexCol
                     key={player}
-                    name={player}
-                    fullName={fullName}
+                    name={name}
+                    fullName={player}
                   />
                 );
               })}

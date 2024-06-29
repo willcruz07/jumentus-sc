@@ -21,9 +21,10 @@ export function TeamsCard({
       <div className="flex min-w-20 flex-col items-center gap-1 pl-3 pr-6">
         <div className="rounded-lg bg-gray-800 p-1">
           <div
-            className={`flex h-10 w-9 items-center justify-center rounded-lg ${teamColor}`}
+            style={{ backgroundColor: teamColor }}
+            className={`flex h-10 w-9 items-center justify-center rounded-lg`}
           >
-            <h1 className="text-2xl font-black text-gray-900">{numberTeam}</h1>
+            <h1 className="text-2xl font-black text-white">{numberTeam}</h1>
           </div>
         </div>
       </div>

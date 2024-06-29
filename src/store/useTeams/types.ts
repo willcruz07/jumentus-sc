@@ -1,7 +1,6 @@
 import { Unsubscribe } from 'firebase/firestore';
 
 import { IDefaultStates } from '../helpers/setStates';
-import { IPlayersScoreOnTheDay } from '../useMatches/types';
 
 export type TActions = {
   startListenerAllPlayers(): Unsubscribe;
@@ -9,10 +8,15 @@ export type TActions = {
 
 export type TState = IDefaultStates<TActions> & {
   allPlayers: Array<IPlayer>;
-  setPlayers(players: IPlayer): Promise<void>;
 };
 
-export interface IPlayer extends IPlayersScoreOnTheDay {
-  id?: string;
+export interface IPlayer {
+  id: string;
+  fullName: string;
+  name: string;
   matches: number;
+  goals: number;
+  assists: number;
+  tackles: number;
+  saves: number;
 }

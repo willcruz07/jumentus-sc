@@ -52,7 +52,7 @@ export default function Players() {
             value: 'matches',
           },
           {
-            label: 'Assistencias',
+            label: 'assistsencias',
             value: 'assists',
           },
           {

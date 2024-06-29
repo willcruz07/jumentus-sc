@@ -9,8 +9,7 @@ export interface IPlayersOfTheMatch extends IPlayersScoreOnTheDay {
 }
 export function CardsVotes({
   fullName,
-  name,
-  assist,
+  assists,
   goals,
   saves,
   tackles,
@@ -32,7 +31,7 @@ export function CardsVotes({
           }}
         />
         <h1 className="overflow-hidden text-ellipsis text-nowrap font-sans text-2xl text-gray-200">
-          {name}
+          {fullName}
         </h1>
       </div>
 
@@ -44,8 +43,8 @@ export function CardsVotes({
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">Assist.</h5>
-            <h6 className="font-sans text-sm text-gray-400">{assist}</h6>
+            <h5 className="font-sans text-sm font-semibold">assists.</h5>
+            <h6 className="font-sans text-sm text-gray-400">{assists}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">

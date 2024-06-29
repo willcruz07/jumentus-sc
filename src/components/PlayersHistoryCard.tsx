@@ -4,26 +4,30 @@ import { IPlayersScoreOnTheDay } from '@/store/useMatches/types';
 interface IProps extends IPlayersScoreOnTheDay {
   onClick?(value: string): void;
   onEditPlayer?(): void;
+  teamColor?: string;
 }
 
 export function PlayerHistoryCard({
   fullName,
   name,
-  assist,
+  assists,
   goals,
   saves,
   tackles,
   onClick,
+  teamColor,
   onEditPlayer,
 }: IProps) {
+  
   return (
     <div
       onClick={() => onClick && onClick(name)}
-      className="mt-1 flex flex-row items-center rounded-lg border border-gray-800 bg-gray-900 shadow-sm"
+      style={{ backgroundColor: teamColor ?? '#111827' }}
+      className={`mt-1 flex flex-row items-center rounded-lg border border-gray-800 py-1 shadow-sm`}
     >
-      <div className="flex min-w-20 flex-col items-center gap-1 pl-3 pr-6">
+      <div className="ml-1 flex min-w-20 flex-col items-center gap-1 pl-3 pr-6">
         <img
-          className="inline-block size-8 rounded-full object-cover"
+          className="inline-block size-12 rounded-full object-cover"
           src={`/img/players/${fullName?.toLowerCase().replace(' ', '_')}.jpg`}
           alt="Image Description"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +36,8 @@ export function PlayerHistoryCard({
             e.target.src = '/img/logo.png';
           }}
         />
-        <h1 className="overflow-hidden text-ellipsis text-nowrap font-sans text-xs text-gray-400">
+
+        <h1 className="w-24 truncate text-nowrap text-center font-sans text-sm font-bold text-white drop-shadow-lg">
           {name}
         </h1>
       </div>
@@ -48,8 +53,8 @@ export function PlayerHistoryCard({
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">Assist.</h5>
-            <h6 className="font-sans text-sm text-gray-400">{assist}</h6>
+            <h5 className="font-sans text-sm font-semibold">assists.</h5>
+            <h6 className="font-sans text-sm text-gray-400">{assists}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">

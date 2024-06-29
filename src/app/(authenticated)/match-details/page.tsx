@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
@@ -17,11 +17,13 @@ import {
   getTeamColors,
 } from '@/utils/lib';
 
+import { useAuth } from '@/store/useAuth';
 import { useMatches } from '@/store/useMatches';
 import {
   IMatchScores,
   IPlayersScoreOnTheDay,
   ITeamDetails,
+  ITeams,
 } from '@/store/useMatches/types';
 import dayjs, { Dayjs } from 'dayjs';
 import { CircleMinus, CirclePlus, Pause, Play } from 'lucide-react';
@@ -41,13 +43,16 @@ export default function MatchDetails() {
     pauseMatch,
     restartMatch,
     setGoals,
+    matchTeams,
     inMatchingVote,
     setPlayersScoreOnTheDay,
     setPlayerWhoScored,
     setFinishMatch,
     setFinishDay,
+    waitingForEvent,
     playersScoreOnTheDay,
   } = useMatches();
+  const { currentUser } = useAuth();
 
   const [modalDefineMatch, setModalDefineMatch] = useState(false);
   const [search, setSearch] = useState('');
@@ -61,21 +66,22 @@ export default function MatchDetails() {
   const intervalId = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // if (matchInProgress?.pausedTime && matchInProgress?.started) {
-    //   const pauseDuration = dayjs().diff(
-    //     dayjs(matchInProgress.pausedTime),
-    //     'second'
-    //   );
-    //   const newStartTime = dayjs(matchInProgress.startTime).add(
-    //     pauseDuration,
-    //     'second'
-    //   );
+    if (matchInProgress?.pausedTime && matchInProgress?.started) {
+      const pauseDuration = dayjs().diff(
+        dayjs(matchInProgress?.pausedTime),
+        'second'
+      );
 
-    //   return startCountDown(newStartTime);
-    // }
+      const newStartTime = dayjs(matchInProgress.startTime).add(
+        pauseDuration,
+        'second'
+      );
 
-    if (matchInProgress?.startTime && matchInProgress?.started) {
-      return startCountDown(dayjs(matchInProgress.startTime));
+      return startCountDown(newStartTime);
+    }
+
+    if (matchInProgress?.startTime && matchInProgress.started) {
+      return startCountDown(dayjs(matchInProgress?.startTime));
     }
 
     return () => {
@@ -92,7 +98,6 @@ export default function MatchDetails() {
 
   const startCountDown = (date: Dayjs) => {
     if (intervalId.current) {
-      console.log('pause interval');
       clearInterval(intervalId.current);
     }
 
@@ -151,18 +156,46 @@ export default function MatchDetails() {
 
   const handleConfirmFinishMatch = () => {
     setFinishMatch();
+    setModalFinishMatch(false);
   };
 
   const handleConfirmFinishDay = () => {
     setFinishDay();
   };
 
-  if (!inMatchingVote && !inProgress) return null;
+  const getPlayerTeam = (fullName: string) => {
+    if (!matchTeams) return undefined;
+
+    for (const team in matchTeams) {
+      if (matchTeams[team as keyof ITeams].includes(fullName)) {
+        return team;
+      }
+    }
+    return null;
+  };
+
+  const isAdmin = useMemo(
+    () =>
+      currentUser?.email?.includes('admin') ||
+      currentUser?.email?.includes('will@'),
+    [currentUser]
+  );
+
+  if (!inMatchingVote && !inProgress && !waitingForEvent) {
+    return (
+      <MainContainer>
+        <Header canGoBack />
+        <h1 className="mt-32 text-center text-2xl">
+          Nada disponível aqui ainda
+        </h1>
+      </MainContainer>
+    );
+  }
 
   if (inMatchingVote) {
     return (
       <MainContainer>
-        <Header />
+        <Header canGoBack />
         <MatchingVote />
       </MainContainer>
     );
@@ -185,13 +218,15 @@ export default function MatchDetails() {
         <>
           <div className="mb-4 mt-2 flex w-full flex-col items-center justify-center rounded-lg border border-gray-800 bg-gray-900 py-6 shadow-sm">
             <div className="flex flex-col items-center">
-              <button
-                type="button"
-                onClick={handleExecutionTimer}
-                className="mb-2 flex items-center justify-center rounded-full border border-gray-200 p-2 text-gray-200"
-              >
-                {matchInProgress?.started ? <Pause /> : <Play />}
-              </button>
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={handleExecutionTimer}
+                  className="mb-2 flex items-center justify-center rounded-full border border-gray-200 p-2 text-gray-200"
+                >
+                  {matchInProgress?.started ? <Pause /> : <Play />}
+                </button>
+              )}
               <h3 className="mb-4 text-center font-mono text-2xl text-gray-400">
                 {!countDown || isNaN(countDown.minutes)
                   ? '--:--'
@@ -202,32 +237,41 @@ export default function MatchDetails() {
             <div className="flex flex-row items-center self-center">
               <div className="flex flex-row gap-3">
                 <div className="flex flex-col gap-3 text-gray-600">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const goal = matchInProgress.goals[0] + 1;
-                      handleDefineGoals([goal, matchInProgress.goals[1]]);
-                    }}
-                  >
-                    <CirclePlus />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const goal =
-                        matchInProgress.goals[0] > 0
-                          ? matchInProgress.goals[0] - 1
-                          : matchInProgress.goals[0];
+                  {isAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const goal = matchInProgress.goals[0] + 1;
+                        handleDefineGoals([goal, matchInProgress.goals[1]]);
+                      }}
+                    >
+                      <CirclePlus />
+                    </button>
+                  )}
+                  {isAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const goal =
+                          matchInProgress.goals[0] > 0
+                            ? matchInProgress.goals[0] - 1
+                            : matchInProgress.goals[0];
 
-                      handleDefineGoals([goal, matchInProgress.goals[1]]);
-                    }}
-                  >
-                    <CircleMinus />
-                  </button>
+                        handleDefineGoals([goal, matchInProgress.goals[1]]);
+                      }}
+                    >
+                      <CircleMinus />
+                    </button>
+                  )}
                 </div>
                 <div className="rounded-lg bg-gray-800 p-2">
                   <div
-                    className={`flex h-full w-10 items-center justify-center rounded-lg ${getTeamColors(matchInProgress.teams?.[0])}`}
+                    style={{
+                      backgroundColor: getTeamColors(
+                        matchInProgress.teams?.[0]
+                      ),
+                    }}
+                    className={`flex h-full w-10 items-center justify-center rounded-lg`}
                   >
                     <h1 className="text-l font-black text-gray-800">
                       {matchInProgress?.teams?.[0].toString().split('_')[1]}
@@ -255,7 +299,12 @@ export default function MatchDetails() {
               <div className="flex flex-row gap-3">
                 <div className="rounded-lg bg-gray-800 p-2">
                   <div
-                    className={`flex h-full w-10 items-center justify-center rounded-lg ${getTeamColors(matchInProgress?.teams?.[1])}`}
+                    style={{
+                      backgroundColor: getTeamColors(
+                        matchInProgress.teams?.[1]
+                      ),
+                    }}
+                    className={`flex h-full w-10 items-center justify-center rounded-lg`}
                   >
                     <h1 className="text-l font-black text-gray-800">
                       {matchInProgress.teams?.[1].toString().split('_')[1]}
@@ -263,34 +312,38 @@ export default function MatchDetails() {
                   </div>
                 </div>
                 <div className="flex flex-col gap-3 text-gray-600">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const goal = matchInProgress.goals[1] + 1;
-                      handleDefineGoals([matchInProgress.goals[0], goal]);
-                    }}
-                  >
-                    <CirclePlus />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const goal =
-                        matchInProgress.goals[1] > 0
-                          ? matchInProgress.goals[1] - 1
-                          : matchInProgress.goals[1];
+                  {isAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const goal = matchInProgress.goals[1] + 1;
+                        handleDefineGoals([matchInProgress.goals[0], goal]);
+                      }}
+                    >
+                      <CirclePlus />
+                    </button>
+                  )}
+                  {isAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const goal =
+                          matchInProgress.goals[1] > 0
+                            ? matchInProgress.goals[1] - 1
+                            : matchInProgress.goals[1];
 
-                      handleDefineGoals([matchInProgress.goals[0], goal]);
-                    }}
-                  >
-                    <CircleMinus />
-                  </button>
+                        handleDefineGoals([matchInProgress.goals[0], goal]);
+                      }}
+                    >
+                      <CircleMinus />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
 
-          {matchInProgress && (
+          {matchInProgress && isAdmin && (
             <Button
               containerStyle="my-2"
               text="Finalizar partida"
@@ -310,8 +363,8 @@ export default function MatchDetails() {
               return (
                 <TeamsCard
                   key={key}
-                  numberTeam={key.split('_')?.[1] ?? ''}
                   {...team}
+                  numberTeam={key.split('_')?.[1] ?? ''}
                   teamColor={getTeamColors(key as keyof IMatchScores)}
                 />
               );
@@ -340,7 +393,7 @@ export default function MatchDetails() {
                     value: 'matches',
                   },
                   {
-                    label: 'Assistencias',
+                    label: 'assistsencias',
                     value: 'assists',
                   },
                   {
@@ -372,31 +425,40 @@ export default function MatchDetails() {
                   player.name.toLowerCase().includes(search.toLowerCase())
                 )
                 ?.sort((a, b) => sortPlayers(a, b, sort))
-                ?.map((player) => (
-                  <PlayerHistoryCard
-                    onEditPlayer={() => {
-                      setPlayerSelected({ ...player });
-                      setModalPlayerScore(true);
-                    }}
-                    key={player.name}
-                    assist={player.assist}
-                    fullName={player.fullName}
-                    goals={player.goals}
-                    name={player.name}
-                    saves={player.saves}
-                    tackles={player.tackles}
-                  />
-                ))}
+                ?.map((player) => {
+                  return (
+                    <PlayerHistoryCard
+                      onEditPlayer={() => {
+                        if (!isAdmin) return;
+
+                        setPlayerSelected({ ...player });
+                        setModalPlayerScore(true);
+                      }}
+                      key={player.fullName}
+                      assists={player.assists}
+                      fullName={player.fullName}
+                      goals={player.goals}
+                      name={player.name}
+                      saves={player.saves}
+                      tackles={player.tackles}
+                      teamColor={getTeamColors(
+                        getPlayerTeam(player.fullName) as keyof ITeams
+                      )}
+                    />
+                  );
+                })}
             </div>
           )}
         </div>
 
-        <Button
-          containerStyle="my-2"
-          text="Finalizar"
-          onClick={() => setModalFinishDay(true)}
-          variant="outlined"
-        />
+        {isAdmin && (
+          <Button
+            containerStyle="my-2"
+            text="Finalizar"
+            onClick={() => setModalFinishDay(true)}
+            variant="outlined"
+          />
+        )}
       </div>
 
       <ModalDefineMatch
@@ -408,7 +470,7 @@ export default function MatchDetails() {
       {playerSelected && matchInProgress && (
         <ModalPlayerScore
           isVisible={modalPlayerScore}
-          assist={playerSelected?.assist}
+          assists={playerSelected?.assists}
           goals={playerSelected?.goals}
           fullName={playerSelected?.fullName}
           name={playerSelected?.name}

@@ -2,6 +2,7 @@ import { generateJWT } from '@/jwt';
 import { KEYS_COOKIES } from '@/paths';
 import { deleteCookie, setCookie } from '@/serverActions/useCookies';
 import { firebaseAuth } from '@/service/firebase/config';
+import { getFirebaseErrorMessageTranslation } from '@/service/firebase/translateMessageFirebase';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -9,7 +10,7 @@ import {
 } from 'firebase/auth';
 import { StoreApi, UseBoundStore, create } from 'zustand';
 
-import { setLoadingState } from '../helpers/setStates';
+import { setErrorState, setLoadingState } from '../helpers/setStates';
 import { TActions, TState } from './types';
 
 export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<
@@ -36,6 +37,7 @@ export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<
 
   async signIn({ email, password }) {
     setLoadingState(useAuth, 'signIn', true);
+    setErrorState(useAuth, 'signIn', '');
 
     await signInWithEmailAndPassword(firebaseAuth, email, password)
       .then(async (result) => {
@@ -48,7 +50,14 @@ export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<
         set({ currentUser: result.user });
       })
       .catch((error) => {
-        console.error(error);
+        setErrorState(
+          useAuth,
+          'signIn',
+          getFirebaseErrorMessageTranslation(
+            error,
+            'Verifique o email e a senha'
+          )
+        );
       })
       .finally(() => {
         setLoadingState(useAuth, 'signIn', false);

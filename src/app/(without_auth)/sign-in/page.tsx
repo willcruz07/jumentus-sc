@@ -7,6 +7,7 @@ import { useCallback } from 'react';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { MainContainer } from '@/components/MainContainer';
+import { ModalLoading } from '@/components/ModalLoading';
 import { Spacing } from '@/components/Spacing';
 
 import { ROUTES } from '@/paths';
@@ -16,7 +17,7 @@ import { useFormik } from 'formik';
 export default function Home() {
   const { push: navigate } = useRouter();
 
-  const { signIn } = useAuth();
+  const { signIn, loading, errors } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -41,7 +42,7 @@ export default function Home() {
       email: 'guest@jumentussc.com',
       password: 'Juve@2024',
     }).then(() => navigate(ROUTES.AUTHENTICATED.HOME));
-  }, []);
+  }, [navigate, signIn]);
 
   return (
     <MainContainer>
@@ -65,6 +66,9 @@ export default function Home() {
           value={formik.values.password}
           onChange={formik.handleChange('password')}
         />
+        {errors.signIn && (
+          <h1 className="text-sm text-red-300">{errors.signIn}</h1>
+        )}
         <Spacing size="XS" direction="X" />
         <Button
           variant="solid"
@@ -77,6 +81,7 @@ export default function Home() {
           text="Acessar sem login"
         />
       </form>
+      <ModalLoading isVisible={loading.signIn} />
     </MainContainer>
   );
 }

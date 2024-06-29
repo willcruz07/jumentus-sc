@@ -2,13 +2,20 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useNavigation } from '@/hook/useNavigation';
 import { ROUTES } from '@/paths';
+import { useAuth } from '@/store/useAuth';
 import { useMatches } from '@/store/useMatches';
 import dayjs from 'dayjs';
 
 export function MatchCard() {
   const { navigateTo } = useNavigation();
-  const { startListenerOfOnGoingMatches, waitingForEvent, inProgress, date } =
-    useMatches();
+  const {
+    startListenerOfOnGoingMatches,
+    waitingForEvent,
+    inProgress,
+    date,
+    inMatchingVote,
+  } = useMatches();
+  const { currentUser } = useAuth();
 
   const [matchInProgress, setMatchInProgress] = useState(false);
 
@@ -24,15 +31,27 @@ export function MatchCard() {
   }, [waitingForEvent, inProgress]);
 
   const title = useMemo(() => {
+    if (inMatchingVote) {
+      return 'Acessar votação';
+    }
+
     return matchInProgress ? 'Partida' : 'Criar partida';
-  }, [matchInProgress]);
+  }, [matchInProgress, inMatchingVote]);
 
   const handleNavigate = useCallback(() => {
-    if (matchInProgress) {
+    if (matchInProgress || inMatchingVote) {
       return navigateTo(ROUTES.AUTHENTICATED.MATCH_DETAILS);
     }
     return navigateTo(ROUTES.AUTHENTICATED.MATCH_CREATE);
-  }, [matchInProgress, navigateTo]);
+  }, [matchInProgress, navigateTo, inMatchingVote]);
+
+  const isAdmin = useMemo(
+    () => currentUser?.email?.includes('admin@'),
+    [currentUser]
+  );
+
+  if (!inMatchingVote && !inProgress && !waitingForEvent && !isAdmin)
+    return null;
 
   return (
     <div

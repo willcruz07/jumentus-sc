@@ -145,7 +145,7 @@ export function ModalPlayerScore({
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'DESARMES'}</h1>
+              <h1 className="mb-1 text-gray-400">{'FALTAS'}</h1>
               <div className="flex gap-3">
                 <button
                   type="button"

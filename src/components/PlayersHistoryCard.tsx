@@ -18,7 +18,6 @@ export function PlayerHistoryCard({
   teamColor,
   onEditPlayer,
 }: IProps) {
-  
   return (
     <div
       onClick={() => onClick && onClick(name)}
@@ -53,17 +52,17 @@ export function PlayerHistoryCard({
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">assists.</h5>
+            <h5 className="font-sans text-sm font-semibold">Assist.</h5>
             <h6 className="font-sans text-sm text-gray-400">{assists}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">Desar.</h5>
+            <h5 className="font-sans text-sm font-semibold">Faltas</h5>
             <h6 className="font-sans text-sm text-gray-400">{tackles}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">Defes.</h5>
+            <h5 className="font-sans text-sm font-semibold">Defesas</h5>
             <h6 className="font-sans text-sm text-gray-400">{saves}</h6>
           </div>
         </div>

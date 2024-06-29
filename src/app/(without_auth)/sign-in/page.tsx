@@ -6,6 +6,7 @@ import { useCallback } from 'react';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { InstallButton } from '@/components/InstallButton';
 import { MainContainer } from '@/components/MainContainer';
 import { ModalLoading } from '@/components/ModalLoading';
 import { Spacing } from '@/components/Spacing';
@@ -46,6 +47,10 @@ export default function Home() {
 
   return (
     <MainContainer>
+      <div>
+        <InstallButton containerStyle="mt-8" />
+      </div>
+
       <Image
         className="self-center"
         width={500}
@@ -81,6 +86,7 @@ export default function Home() {
           text="Acessar sem login"
         />
       </form>
+
       <ModalLoading isVisible={loading.signIn} />
     </MainContainer>
   );

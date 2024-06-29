@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { Input } from '@/components/Input';
 import { MainContainer } from '@/components/MainContainer';
+import { ITeamProps, ModalMatchScores } from '@/components/ModalMatchScores';
 import { ModalPlayerScore } from '@/components/ModalPlayerScores';
 import { PlayerHistoryCard } from '@/components/PlayersHistoryCard';
 import { Select } from '@/components/Select';
@@ -50,6 +51,7 @@ export default function MatchDetails() {
     setFinishMatch,
     setFinishDay,
     waitingForEvent,
+    setTeamScoresOnTheDay,
     playersScoreOnTheDay,
   } = useMatches();
   const { currentUser } = useAuth();
@@ -59,7 +61,10 @@ export default function MatchDetails() {
   const [sort, setSort] = useState<keyof IPlayersScoreOnTheDay>('name');
   const [countDown, setCountDown] = useState<ITimeRemaining>();
   const [playerSelected, setPlayerSelected] = useState<IPlayersScoreOnTheDay>();
+  const [teamSelected, setTeamSelected] =
+    useState<Omit<ITeamProps, 'onConfirm' | 'onCancel' | 'isVisible'>>();
   const [modalPlayerScore, setModalPlayerScore] = useState(false);
+  const [modalMatchScore, setModalMatchScore] = useState(false);
   const [modalFinishMatch, setModalFinishMatch] = useState(false);
   const [modalFinishDay, setModalFinishDay] = useState(false);
 
@@ -205,7 +210,7 @@ export default function MatchDetails() {
     <MainContainer>
       <Header canGoBack />
 
-      {!matchInProgress && (
+      {!matchInProgress && isAdmin && (
         <Button
           containerStyle="my-6"
           text="Definir confronto"
@@ -364,6 +369,19 @@ export default function MatchDetails() {
                 <TeamsCard
                   key={key}
                   {...team}
+                  onClick={() => {
+                    setTeamSelected({
+                      draw: team.draw,
+                      goalsConceded: team.goalsConceded,
+                      goalsDifference: team.goalsConceded,
+                      goalsScored: team.goalsConceded,
+                      loss: team.loss,
+                      teamColor: getTeamColors(key as keyof IMatchScores),
+                      win: team.win,
+                      numberTeam: key.split('_')?.[1] ?? '',
+                    });
+                    setModalMatchScore(true);
+                  }}
                   numberTeam={key.split('_')?.[1] ?? ''}
                   teamColor={getTeamColors(key as keyof IMatchScores)}
                 />
@@ -467,7 +485,7 @@ export default function MatchDetails() {
         onConfirm={() => setModalDefineMatch(false)}
       />
 
-      {playerSelected && matchInProgress && (
+      {playerSelected && (
         <ModalPlayerScore
           isVisible={modalPlayerScore}
           assists={playerSelected?.assists}
@@ -486,6 +504,57 @@ export default function MatchDetails() {
             setPlayersScoreOnTheDay({
               ...playerSelected,
               ...data,
+            });
+          }}
+        />
+      )}
+
+      {teamSelected && teamScoresOnTheDay && (
+        <ModalMatchScores
+          isVisible={modalMatchScore}
+          draw={
+            teamScoresOnTheDay[
+              `team_${teamSelected.numberTeam}` as keyof IMatchScores
+            ].draw
+          }
+          teamColor={teamSelected.teamColor}
+          win={
+            teamScoresOnTheDay[
+              `team_${teamSelected.numberTeam}` as keyof IMatchScores
+            ].win
+          }
+          goalsDifference={
+            teamScoresOnTheDay[
+              `team_${teamSelected.numberTeam}` as keyof IMatchScores
+            ].goalsConceded
+          }
+          goalsScored={
+            teamScoresOnTheDay[
+              `team_${teamSelected.numberTeam}` as keyof IMatchScores
+            ].goalsScored
+          }
+          loss={
+            teamScoresOnTheDay[
+              `team_${teamSelected.numberTeam}` as keyof IMatchScores
+            ].loss
+          }
+          numberTeam={teamSelected.numberTeam}
+          goalsConceded={
+            teamScoresOnTheDay[
+              `team_${teamSelected.numberTeam}` as keyof IMatchScores
+            ].goalsConceded
+          }
+          onCancel={() => setModalMatchScore(false)}
+          onConfirm={(data) => {
+            setModalMatchScore(false);
+            setTeamScoresOnTheDay({
+              draw: data.draw,
+              goalsConceded: data.goalsConceded,
+              goalsDifference: data.goalsDifference,
+              goalsScored: data.goalsScored,
+              loss: data.loss,
+              team: `team_${teamSelected.numberTeam}` as any,
+              win: data.win,
             });
           }}
         />

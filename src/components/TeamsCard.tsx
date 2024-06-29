@@ -5,6 +5,7 @@ import { ITeamDetails } from '@/store/useMatches/types';
 interface IProps extends ITeamDetails {
   teamColor: string;
   numberTeam: string;
+  onClick?(): void;
 }
 
 export function TeamsCard({
@@ -13,6 +14,7 @@ export function TeamsCard({
   goalsConceded,
   goalsScored,
   numberTeam,
+  onClick,
   loss,
   win,
 }: IProps) {
@@ -29,7 +31,10 @@ export function TeamsCard({
         </div>
       </div>
 
-      <div className="mb-2 mr-2 mt-2 flex w-full flex-row gap-3 rounded-lg border border-gray-800 bg-gray-900 p-2 shadow-sm">
+      <div
+        onClick={() => onClick && onClick()}
+        className="mb-2 mr-2 mt-2 flex w-full flex-row gap-3 rounded-lg border border-gray-800 bg-gray-900 p-2 shadow-sm"
+      >
         <div className="grid w-full grid-cols-6">
           <div className="flex flex-col items-center gap-1">
             <h5 className="font-sans text-sm font-semibold">V.</h5>

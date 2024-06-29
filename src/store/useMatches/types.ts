@@ -13,6 +13,7 @@ export type TActions = {
   setGoals(data: [number, number]): Promise<void>;
   setPlayerWhoScored(name: string): Promise<void>;
   setPlayersScoreOnTheDay(player: IPlayersScoreOnTheDay): Promise<void>;
+  setTeamScoresOnTheDay(team: ITeamScoreOnTheDay): Promise<void>;
 
   startMatch(): Promise<void>;
   pauseMatch(): Promise<void>;
@@ -75,6 +76,10 @@ export interface IMatchInProgress {
   endTime: Date | null;
   pausedTime?: Date | null;
   playersWhoScored: Array<string>;
+}
+
+interface ITeamScoreOnTheDay extends ITeamDetails {
+  team: keyof IMatchScores;
 }
 
 export interface IMatchScores {

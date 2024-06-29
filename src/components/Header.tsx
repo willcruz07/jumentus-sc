@@ -7,6 +7,7 @@ import { useAuth } from '@/store/useAuth';
 import { ArrowBigLeftDash, DoorOpen } from 'lucide-react';
 
 import { ButtonIcon } from './Button';
+import { InstallButton } from './InstallButton';
 
 interface IProps {
   canGoBack?: boolean;
@@ -23,14 +24,19 @@ export function Header({ canGoBack }: IProps) {
   }, [signOut, navigateTo]);
 
   return (
-    <div className="flex min-h-full w-full items-center justify-between">
-      <Image width={128} height={128} src={'/img/logo.png'} alt="Logo" />
-      <ButtonIcon
-        text={canGoBack ? 'Voltar' : 'Sair'}
-        icon={canGoBack ? <ArrowBigLeftDash /> : <DoorOpen />}
-        onClick={() => (canGoBack ? goBack() : handleSignOut())}
-        variant="solid"
-      />
+    <div className="flex min-h-full w-full flex-col">
+      <div className="flex min-h-full w-full items-center justify-between">
+        <Image width={128} height={128} src={'/img/logo.png'} alt="Logo" />
+        <ButtonIcon
+          text={canGoBack ? 'Voltar' : 'Sair'}
+          icon={canGoBack ? <ArrowBigLeftDash /> : <DoorOpen />}
+          onClick={() => (canGoBack ? goBack() : handleSignOut())}
+          variant="solid"
+        />
+      </div>
+      <div className="my-4">
+        <InstallButton />
+      </div>
     </div>
   );
 }

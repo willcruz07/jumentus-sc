@@ -2,6 +2,7 @@ type TVariant = 'solid' | 'outlined' | 'text';
 
 interface IProps {
   text: string;
+  id?: string;
   variant: TVariant;
   onClick(): void;
   icon?: React.ReactNode;
@@ -10,6 +11,7 @@ interface IProps {
 
 export function Button({
   text,
+  id,
   variant = 'solid',
   onClick,
   containerStyle,
@@ -24,6 +26,7 @@ export function Button({
   };
   return (
     <button
+      id={id}
       type="button"
       onClick={onClick}
       className={`${className[variant]} ${containerStyle}`}
@@ -33,10 +36,17 @@ export function Button({
   );
 }
 
-export function ButtonIcon({ onClick, text, icon }: IProps) {
+export function ButtonIcon({
+  onClick,
+  text,
+  containerStyle,
+  icon,
+  id,
+}: IProps) {
   return (
     <button
-      className="flex h-min items-center gap-2 rounded-lg border border-gray-400 px-5 py-3 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:hover:bg-neutral-800"
+      id={id}
+      className={`flex ${containerStyle} h-min items-center justify-center gap-2 rounded-lg border border-gray-400 px-5 py-3 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:hover:bg-neutral-800`}
       type="button"
       onClick={onClick}
     >

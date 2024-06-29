@@ -187,6 +187,36 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
     }
   },
 
+  setTeamScoresOnTheDay: async (data) => {
+    const details = useMatches.getState();
+    setLoadingState(useMatches, 'setTeamScoresOnTheDay', true);
+    try {
+      const docRef = doc(
+        dbFirestore,
+        FIREBASE.COLLECTIONS.MATCHES,
+        details?.matchId ?? ''
+      );
+
+      await updateDoc(docRef, {
+        teamScoresOnTheDay: {
+          ...details.teamScoresOnTheDay,
+          [data.team]: {
+            draw: data.draw,
+            goalsConceded: data.goalsConceded,
+            goalsDifference: data.goalsDifference,
+            goalsScored: data.goalsScored,
+            loss: data.loss,
+            win: data.win,
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingState(useMatches, 'setTeamScoresOnTheDay', true);
+    }
+  },
+
   setPlayerWhoScored: async (name) => {
     const details = useMatches.getState();
     setLoadingState(useMatches, 'setPlayerWhoScored', true);

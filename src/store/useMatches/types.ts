@@ -22,6 +22,7 @@ export type TActions = {
   setMatch(data: [keyof ITeams, keyof ITeams]): Promise<void>;
 
   setFinishVotes(data: IFinishVotes): Promise<void>;
+  setVotes(data: IVotes): Promise<void>;
 };
 
 export type TState = IDefaultStates<TActions> & IMatchState;
@@ -40,6 +41,14 @@ export interface IMatchState {
   finishedMatches: Array<IMatchInProgress>;
   playerOfTheDay?: IPlayersScoreOnTheDay | null;
   worstPlayerOfTheDay?: IPlayersScoreOnTheDay | null;
+
+  votesWorstPlayers: Array<IPlayerOfTheDay>;
+  votesBestPlayers: Array<IPlayerOfTheDay>;
+}
+
+interface IVotes {
+  best: Array<IPlayerOfTheDay>;
+  worst: Array<IPlayerOfTheDay>;
 }
 
 interface IFinishVotes {

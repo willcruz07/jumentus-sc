@@ -36,6 +36,8 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
   teamScoresOnTheDay: undefined,
   playersScoreOnTheDay: [],
   date: undefined,
+  votesBestPlayers: [],
+  votesWorstPlayers: [],
 
   createMatch: async (data) => {
     const allPlayers = usePlayers.getState().allPlayers;
@@ -44,6 +46,8 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
     try {
       const docRef = collection(dbFirestore, FIREBASE.COLLECTIONS.MATCHES);
       await addDoc(docRef, {
+        votesBestPlayers: [],
+        votesWorstPlayers: [],
         inProgress: false,
         waitingForEvent: true,
         inMatchingVote: false,
@@ -470,6 +474,26 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
       console.error(error);
     } finally {
       setLoadingState(useMatches, 'setFinishVotes', false);
+    }
+  },
+
+  setVotes: async (data) => {
+    const details = useMatches.getState();
+    setLoadingState(useMatches, 'setVotes', false);
+    try {
+      const docRef = doc(
+        dbFirestore,
+        FIREBASE.COLLECTIONS.MATCHES,
+        details?.matchId ?? ''
+      );
+      await updateDoc(docRef, {
+        votesBestPlayers: data.best,
+        votesWorstPlayers: data.worst,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingState(useMatches, 'setVotes', false);
     }
   },
 

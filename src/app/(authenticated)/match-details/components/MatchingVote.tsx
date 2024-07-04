@@ -17,6 +17,7 @@ export function MatchingVote() {
     startListenerOfOnGoingMatches,
     playersScoreOnTheDay,
     setFinishVotes,
+    setVotes,
   } = useMatches();
   const { navigateTo } = useNavigation();
 
@@ -31,6 +32,8 @@ export function MatchingVote() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(playersScoreOnTheDay);
+
   useEffect(() => {
     if (playersScoreOnTheDay) {
       const list = playersScoreOnTheDay?.map((player) => ({
@@ -40,8 +43,17 @@ export function MatchingVote() {
 
       setWorstPlayers(list);
       setBestPlayers(list);
+
+      setVotes({
+        best: list,
+        worst: list,
+      });
     }
   }, [playersScoreOnTheDay]);
+
+  // useEffect(() => {
+
+  // }, [votesBestPlayers, votesWorstPlayers])
 
   const handlePlayersVotes = (player: IPlayersVotes, type: 'add' | 'sub') => {
     const updateVotes = (players: Array<IPlayersVotes>) =>
@@ -88,22 +100,23 @@ export function MatchingVote() {
 
   return (
     <div className="pt-4">
-      {(!(totals.bestPlayer === bestPlayer.length - 1) ||
-        !(totals.worstPlayers === worstPlayers.length - 1)) && (
-        <h1 className="mb-3 text-center text-gray-500">
-          Realize todos os votos para poder finalizar a votação.
-        </h1>
+      {/* {(!(totals.bestPlayer === bestPlayer.length - 1) ||
+        !(totals.worstPlayers === worstPlayers.length - 1)) && ( */}
+      {/* )} */}
+
+      {totals.bestPlayer > 0 && totals.worstPlayers > 0 && (
+        // totals.worstPlayers === worstPlayers.length - 1 && (
+        <Button
+          containerStyle="my-2 mb-6"
+          text="Finalizar"
+          onClick={handleFinishVotes}
+          variant="solid"
+        />
       )}
 
-      {totals.bestPlayer === bestPlayer.length - 1 &&
-        totals.worstPlayers === worstPlayers.length - 1 && (
-          <Button
-            containerStyle="my-2 mb-6"
-            text="Finalizar"
-            onClick={handleFinishVotes}
-            variant="solid"
-          />
-        )}
+      <h1 className="mb-3 text-center text-gray-500">
+        Realize todos os votos para poder finalizar a votação.
+      </h1>
 
       <div className="mb-4 flex h-16 w-full flex-row rounded-lg border border-gray-700">
         <button

@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+
+import { useAuth } from '@/store/useAuth';
 import { IPlayersScoreOnTheDay } from '@/store/useMatches/types';
 import { CircleMinus, CirclePlus } from 'lucide-react';
 
@@ -17,6 +20,14 @@ export function CardsVotes({
   votes,
   onSubtract,
 }: IPlayersOfTheMatch) {
+  const { currentUser } = useAuth();
+
+  const isAdmin = useMemo(
+    () =>
+      currentUser?.email?.includes('admin') ||
+      currentUser?.email?.includes('will@'),
+    [currentUser]
+  );
   return (
     <div className="mt-1 flex flex-col items-center rounded-lg border border-gray-800 bg-gray-900 pt-6 shadow-sm">
       <div className="mb-4 flex min-w-20 flex-col items-center">
@@ -60,15 +71,19 @@ export function CardsVotes({
       </div>
 
       <div className="my-6 flex flex-row items-center gap-3 text-gray-300">
-        <button type="button" onClick={() => onSubtract()}>
-          <CircleMinus />
-        </button>
+        {isAdmin && (
+          <button type="button" onClick={() => onSubtract()}>
+            <CircleMinus />
+          </button>
+        )}
 
         <h1 className="text-3xl font-bold">{votes}</h1>
 
-        <button type="button" onClick={() => onAddVote()}>
-          <CirclePlus />
-        </button>
+        {isAdmin && (
+          <button type="button" onClick={() => onAddVote()}>
+            <CirclePlus />
+          </button>
+        )}
       </div>
     </div>
   );

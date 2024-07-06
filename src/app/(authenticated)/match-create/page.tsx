@@ -84,11 +84,14 @@ export default function MatchCreate() {
         const nameMatch = line.match(/-\s*(.+?)\s*(✅|🔁|🔃|❓|🔂)/);
         if (nameMatch) {
           let name: string = nameMatch[1].trim();
+          // Remove accents from name
+          name = removeAccents(name);
+
           // Handle special cases for replacements
           if (nameMatch[2] === '🔁' || nameMatch[2] === '🔃') {
             const replacementMatch = line.match(/(🔁|🔃)\s*(.+)/);
             if (replacementMatch) {
-              name = replacementMatch[2].trim();
+              name = removeAccents(replacementMatch[2].trim());
             }
           } else if (nameMatch[2] === '🔂') {
             // Keeping original name for 🔂
@@ -111,7 +114,7 @@ export default function MatchCreate() {
         const nameMatch = line.match(/-\s*(.+)/);
         if (nameMatch) {
           const name: string = nameMatch[1].trim();
-          goalKeepers.push(name);
+          goalKeepers.push(removeAccents(name));
         }
       }
       // End goalKeepers section if another section starts
@@ -125,6 +128,10 @@ export default function MatchCreate() {
       goalKeepers,
       date,
     };
+  };
+
+  const removeAccents = (str: string): string => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   };
 
   const divideTeams = (playersList: Array<string>): ITeams => {

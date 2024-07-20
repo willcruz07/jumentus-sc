@@ -81,15 +81,20 @@ export default function MatchCreate() {
       }
 
       if (inPlayersSection && line.match(/^\d+/)) {
-        const nameMatch = line.match(/-\s*(.+?)\s*(✅|🔁|🔃|❓|🔂)/);
+        const nameMatch = line.match(/-\s*(.+?)\s*(✅|🔁|🔃|❓|🔂|🔄)/);
         if (nameMatch) {
           let name: string = nameMatch[1].trim();
           // Remove accents from name
           name = removeAccents(name);
 
           // Handle special cases for replacements
-          if (nameMatch[2] === '🔁' || nameMatch[2] === '🔃') {
-            const replacementMatch = line.match(/(🔁|🔃)\s*(.+)/);
+
+          if (
+            nameMatch[2] === '🔁' ||
+            nameMatch[2] === '🔃' ||
+            nameMatch[2] === '🔄'
+          ) {
+            const replacementMatch = line.match(/(🔁|🔃|🔄)\s*(.+)/);
             if (replacementMatch) {
               name = removeAccents(replacementMatch[2].trim());
             }
@@ -174,6 +179,7 @@ export default function MatchCreate() {
 
   const handleCreatePlayersList = () => {
     const parsed = parseTextToObj(playerList);
+
     setDateSelected(parsed.date);
     setPlayersSelected({
       goalKeepers: parsed.goalKeepers,

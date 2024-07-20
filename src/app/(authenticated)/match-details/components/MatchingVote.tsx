@@ -32,8 +32,6 @@ export function MatchingVote() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(playersScoreOnTheDay);
-
   useEffect(() => {
     if (playersScoreOnTheDay) {
       const list = playersScoreOnTheDay?.map((player) => ({

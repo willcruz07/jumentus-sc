@@ -212,10 +212,9 @@ export default function MatchDetails() {
 
       {!matchInProgress && isAdmin && (
         <Button
-          containerStyle="my-6"
-          text="Definir confronto"
+          className="my-6"
+          label="Definir confronto"
           onClick={() => setModalDefineMatch(true)}
-          variant="solid"
         />
       )}
 
@@ -278,7 +277,7 @@ export default function MatchDetails() {
                     }}
                     className={`flex h-full w-10 items-center justify-center rounded-lg`}
                   >
-                    <h1 className="text-l font-black text-gray-800">
+                    <h1 className="text-xl font-black text-slate-200">
                       {matchInProgress?.teams?.[0].toString().split('_')[1]}
                     </h1>
                   </div>
@@ -286,17 +285,19 @@ export default function MatchDetails() {
               </div>
 
               <div className="flex items-center px-6">
-                <h1 className="text-5xl font-bold">
+                <h1 className="text-5xl font-bold text-slate-100">
                   {matchInProgress.goals?.[0]}
                 </h1>
 
                 <div className="flex flex-col items-center px-4">
                   <div className="flex flex-row gap-2">
-                    <span className="font-sans text-2xl font-semibold">x</span>
+                    <span className="font-sans text-2xl font-semibold text-slate-400">
+                      x
+                    </span>
                   </div>
                 </div>
 
-                <h1 className="text-5xl font-bold">
+                <h1 className="text-5xl font-bold text-slate-100">
                   {matchInProgress.goals?.[1]}
                 </h1>
               </div>
@@ -311,7 +312,7 @@ export default function MatchDetails() {
                     }}
                     className={`flex h-full w-10 items-center justify-center rounded-lg`}
                   >
-                    <h1 className="text-l font-black text-gray-800">
+                    <h1 className="text-xl font-black text-slate-200">
                       {matchInProgress.teams?.[1].toString().split('_')[1]}
                     </h1>
                   </div>
@@ -350,10 +351,9 @@ export default function MatchDetails() {
 
           {matchInProgress && isAdmin && (
             <Button
-              containerStyle="my-2"
-              text="Finalizar partida"
+              className="my-2"
+              label="Finalizar partida"
               onClick={() => setModalFinishMatch(true)}
-              variant="outlined"
             />
           )}
         </>
@@ -432,7 +432,7 @@ export default function MatchDetails() {
                 type="text"
                 value={search}
                 onChange={setSearch}
-                label="Pesquisar"
+                label="Pesquisar:"
               />
             </div>
           )}
@@ -473,10 +473,9 @@ export default function MatchDetails() {
 
         {isAdmin && (
           <Button
-            containerStyle="my-2"
-            text="Finalizar"
+            className="my-2"
+            label="Finalizar"
             onClick={() => setModalFinishDay(true)}
-            variant="outlined"
           />
         )}
       </div>

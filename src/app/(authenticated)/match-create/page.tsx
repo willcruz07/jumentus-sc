@@ -247,15 +247,14 @@ export default function MatchCreate() {
 
       <TextArea
         value={playerList}
+        label="Lista de jogadores"
         onChange={setPlayerList}
-        containerStyle="mt-4"
       />
 
       <Button
-        containerStyle="mt-4"
-        variant="solid"
+        className="mt-6"
         onClick={handleCreatePlayersList}
-        text="Listar jogadores"
+        label="Listar jogadores"
       />
 
       {playersSelected && (
@@ -302,20 +301,19 @@ export default function MatchCreate() {
       {playersSelected?.players && (
         <>
           <Button
-            containerStyle="mt-10"
-            variant="outlined"
+            className="mt-10"
             onClick={() =>
               playersSelected?.players &&
               setTeams(divideTeams(playersSelected?.players))
             }
-            text="Gerar times automaticamente"
+            label="Gerar times automaticamente"
           />
 
           <Button
-            containerStyle="mt-3"
-            variant="text"
+            variant="secondary"
+            className="mt-3"
             onClick={() => setTeams(undefined)}
-            text="Limpar times"
+            label="Limpar times"
           />
         </>
       )}
@@ -352,10 +350,9 @@ export default function MatchCreate() {
         <>
           <h3 className="mt-3 font-sans font-light text-gray-400">{`Partida marcada para: ${dayjs(dateSelected).format('DD/MM/YYYY')}`}</h3>
           <Button
-            containerStyle="mt-8"
-            variant="solid"
+            className="mt-8"
             onClick={() => setModalConfirmCreate(true)}
-            text="Criar partida"
+            label="Criar partida"
           />
         </>
       )}

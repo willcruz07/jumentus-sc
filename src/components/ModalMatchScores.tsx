@@ -116,7 +116,7 @@ export function ModalMatchScores({
               style={{ backgroundColor: teamColor }}
               className="flex items-center justify-center rounded-full px-9 py-6"
             >
-              <h2 className="text-2xl font-semibold text-gray-200">
+              <h2 className="text-3xl font-bold text-slate-100">
                 {numberTeam}
               </h2>
             </div>
@@ -124,108 +124,128 @@ export function ModalMatchScores({
 
           <div className="grid grid-cols-3 gap-6">
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'VITORIAS'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'VITORIAS'}</h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('win', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{teamData.win}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {teamData.win}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('win', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'EMPATES'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'EMPATES'}</h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('draw', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{teamData.draw}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {teamData.draw}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('draw', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'DERROTAS'}</h1>
-              <div className="flex gap-3">
+              <h1 className="mb-1 font-bold text-slate-200">{'DERROTAS'}</h1>
+              <div className="flex gap-3 text-slate-200">
                 <button
                   type="button"
                   onClick={() => onChangeValue('loss', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{teamData.loss}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {teamData.loss}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('loss', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'GOLS A FAVOR'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">
+                {'GOLS A FAVOR'}
+              </h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('goalsScored', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{teamData.goalsScored}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {teamData.goalsScored}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('goalsScored', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'GOLS CONTRA'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'GOLS CONTRA'}</h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('goalsConceded', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{teamData.goalsConceded}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {teamData.goalsConceded}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('goalsConceded', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'SALDO DE GOLS'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">
+                {'SALDO DE GOLS'}
+              </h1>
               <div className="flex gap-3">
-                <h1 className="text-3xl font-bold">{goalsDiff}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {goalsDiff}
+                </h1>
               </div>
             </div>
           </div>
 
           <div className="mt-8 flex gap-4">
-            <Button text="Cancelar" variant="outlined" onClick={onCancel} />
             <Button
-              text="Confirmar"
-              variant="solid"
+              className="w-full"
+              label="Cancelar"
+              variant="secondary"
+              onClick={onCancel}
+            />
+            <Button
+              label="Confirmar"
               onClick={() =>
                 onConfirm({
                   ...teamData,

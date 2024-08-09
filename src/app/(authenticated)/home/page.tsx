@@ -57,8 +57,7 @@ export default function Home() {
         {currentUser?.email === 'will@jumentussc.com' && (
           <Button
             onClick={handleInitPlayersCollection}
-            text="Inicializar usuarios"
-            variant="solid"
+            label="Inicializar usuarios"
           />
         )}
       </div>

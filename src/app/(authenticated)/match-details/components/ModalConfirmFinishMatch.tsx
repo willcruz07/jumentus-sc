@@ -54,8 +54,13 @@ export function ModalConfirmFinishMatch({
           </h4>
 
           <div className="flex gap-4">
-            <Button text="Cancelar" variant="outlined" onClick={onCancel} />
-            <Button text="Confirmar" variant="solid" onClick={onConfirm} />
+            <Button
+              label="Cancelar"
+              variant="secondary"
+              className="w-full"
+              onClick={onCancel}
+            />
+            <Button label="Confirmar" onClick={onConfirm} />
           </div>
         </div>
       </div>

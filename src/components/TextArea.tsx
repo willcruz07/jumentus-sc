@@ -1,26 +1,60 @@
-interface IProps {
-  containerStyle?: string;
+import { HTMLAttributes, useMemo } from 'react';
+
+import { Label } from './ui/label';
+import { Textarea as TextAreaUI } from './ui/textarea';
+
+type TDivElement = Pick<HTMLAttributes<HTMLDivElement>, 'className'>;
+
+interface IProps extends TDivElement {
+  label: string;
   value: string;
   onChange(value: string): void;
+  disabled?: boolean;
+  onError?: string;
+  placeholder?: string;
 }
 
-export function TextArea({ containerStyle, onChange, value }: IProps) {
+export function TextArea({
+  label,
+  onChange,
+  value,
+  disabled,
+  onError,
+  placeholder,
+  className,
+}: IProps) {
+  const inputOnError = useMemo(() => {
+    return onError ? 'border-red-500 dark:border-red-950' : '';
+  }, [onError]);
+
+  const labelOnerror = useMemo(() => {
+    return onError ? 'text-red-500 dark:text-red-900' : 'text-slate-500';
+  }, [onError]);
+
   return (
-    <div className={`relative ${containerStyle}`}>
-      <textarea
-        id="hs-floating-text-area-value"
-        className="peer block w-full rounded-lg border-gray-700 p-4 text-sm placeholder:text-transparent autofill:pb-2 autofill:pt-6 focus:border-amber-600 focus:pb-2 focus:pt-6 focus:ring-amber-500 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-900 dark:text-neutral-400 dark:focus:ring-neutral-600 [&:not(:placeholder-shown)]:pb-2 [&:not(:placeholder-shown)]:pt-6"
-        rows={6}
-        placeholder=""
+    <div
+      className={`flex flex-col gap-2 bg-transparent dark:bg-transparent ${className}`}
+    >
+      <Label
+        aria-disabled={disabled}
+        className={` ${labelOnerror}`}
+        htmlFor={label}
+      >
+        {label}
+      </Label>
+      <TextAreaUI
+        id={label}
         value={value}
+        disabled={disabled}
+        placeholder={placeholder}
+        className={`${inputOnError} border-slate-500'focus:ring-transparent border-input border-slate-600 bg-transparent text-slate-300 outline-none transition-all ease-in-out placeholder:text-slate-300 focus-within:ring-0 focus:border-2 focus-visible:border-slate-500 focus-visible:ring-0 dark:bg-transparent`}
         onChange={(e) => onChange(e.target.value)}
       />
-      <label
-        htmlFor="hs-floating-input-email-value"
-        className="pointer-events-none absolute start-0 top-0 h-full origin-[0_0] truncate border border-transparent p-4 text-sm transition duration-100 ease-in-out peer-focus:-translate-y-1.5 peer-focus:translate-x-0.5 peer-focus:scale-90 peer-focus:text-gray-500 peer-disabled:pointer-events-none peer-disabled:opacity-50 peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:translate-x-0.5 peer-[:not(:placeholder-shown)]:scale-90 peer-[:not(:placeholder-shown)]:text-gray-500 dark:text-neutral-500 dark:peer-focus:text-neutral-500 dark:peer-[:not(:placeholder-shown)]:text-neutral-500"
-      >
-        {'Lista de Jogadores:'}
-      </label>
+      {onError && (
+        <span className="text-xs italic text-red-600 dark:text-red-900">
+          {onError ?? ''}
+        </span>
+      )}
     </div>
   );
 }

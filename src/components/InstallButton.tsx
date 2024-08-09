@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { Download } from 'lucide-react';
+// import { Download } from 'lucide-react';
 
-import { ButtonIcon } from './Button';
+// interface IProps {
+//   containerStyle?: string;
+// }
 
-interface IProps {
-  containerStyle?: string;
-}
-
-export function InstallButton({ containerStyle }: IProps) {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [isStandalone, setIsStandalone] = useState<boolean>(false);
+export function InstallButton() {
+  const [, setDeferredPrompt] = useState<any>(null);
+  const [, setIsStandalone] = useState<boolean>(false);
 
   useEffect(() => {
     // Função para verificar se o app está em modo standalone
@@ -41,30 +39,32 @@ export function InstallButton({ containerStyle }: IProps) {
     };
   }, []);
 
-  const handleInstallClick = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult: any) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('Usuário aceitou instalar o PWA - WILL');
-        } else {
-          console.log('Usuário recusou instalar o PWA - WILL');
-        }
-        setDeferredPrompt(null);
-      });
-    }
-  };
+  // const handleInstallClick = () => {
+  //   if (deferredPrompt) {
+  //     deferredPrompt.prompt();
+  //     deferredPrompt.userChoice.then((choiceResult: any) => {
+  //       if (choiceResult.outcome === 'accepted') {
+  //         console.log('Usuário aceitou instalar o PWA - WILL');
+  //       } else {
+  //         console.log('Usuário recusou instalar o PWA - WILL');
+  //       }
+  //       setDeferredPrompt(null);
+  //     });
+  //   }
+  // };
 
-  return (
-    !isStandalone &&
-    deferredPrompt && (
-      <ButtonIcon
-        variant="outlined"
-        text="Baixar o app"
-        onClick={handleInstallClick}
-        containerStyle={containerStyle}
-        icon={<Download />}
-      />
-    )
-  );
+  return null;
+
+  // return (
+  //   !isStandalone &&
+  //   deferredPrompt && (
+  //     <ButtonIcon
+  //       variant="outlined"
+  //       text="Baixar o app"
+  //       onClick={handleInstallClick}
+  //       containerStyle={containerStyle}
+  //       icon={<Download />}
+  //     />
+  //   )
+  // );
 }

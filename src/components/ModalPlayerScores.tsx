@@ -109,86 +109,97 @@ export function ModalPlayerScore({
 
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'GOLS'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'GOLS'}</h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('goals', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{playerData.goals}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {playerData.goals}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('goals', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'ASSISTENCIAS'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">
+                {'ASSISTENCIAS'}
+              </h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('assists', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{playerData.assists}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {playerData.assists}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('assists', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'FALTAS'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'FALTAS'}</h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('tackles', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{playerData.tackles}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {playerData.tackles}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('tackles', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 text-gray-400">{'DEFESAS'}</h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'DEFESAS'}</h1>
               <div className="flex gap-3">
                 <button
                   type="button"
                   onClick={() => onChangeValue('saves', 'subtract')}
                 >
-                  <CircleMinus />
+                  <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold">{playerData.saves}</h1>
+                <h1 className="text-3xl font-bold text-slate-300">
+                  {playerData.saves}
+                </h1>
                 <button
                   type="button"
                   onClick={() => onChangeValue('saves', 'add')}
                 >
-                  <CirclePlus />
+                  <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
           </div>
 
           <div className="mt-8 flex gap-4">
-            <Button text="Cancelar" variant="outlined" onClick={onCancel} />
             <Button
-              text="Confirmar"
-              variant="solid"
-              onClick={() => onConfirm(playerData)}
+              label="Cancelar"
+              className="w-full"
+              variant="secondary"
+              onClick={onCancel}
             />
+            <Button label="Confirmar" onClick={() => onConfirm(playerData)} />
           </div>
         </div>
       </div>

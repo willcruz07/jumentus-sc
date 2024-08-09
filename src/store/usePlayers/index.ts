@@ -1,9 +1,18 @@
 import { FIREBASE } from '@/paths';
 import { dbFirestore } from '@/service/firebase/config';
-import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import dayjs from 'dayjs';
+import {
+  collection,
+  doc,
+  onSnapshot,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { StoreApi, UseBoundStore, create } from 'zustand';
 
 import { setLoadingState } from '../helpers/setStates';
+import { IMatchState } from '../useMatches/types';
 import { IPlayer, TActions, TState } from './types';
 
 export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<
@@ -12,6 +21,7 @@ export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<
   errors: {} as TState['errors'],
   loading: {} as TState['loading'],
   allPlayers: [],
+  scorePlayers: [],
 
   setPlayers: async (player) => {
     const allPlayers = usePlayers.getState().allPlayers;
@@ -75,6 +85,73 @@ export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<
       });
 
       set({ allPlayers: data });
+    });
+
+    return unsubscribe;
+  },
+
+  startListenerScorePlayers: (month) => {
+    const currentYear = dayjs().format('YYYY');
+
+    const firstDay =
+      month === '00'
+        ? dayjs().startOf('year').toDate()
+        : dayjs(`${currentYear}-${month}-01`).startOf('month').toDate();
+    const lastDay =
+      month === '00'
+        ? dayjs().endOf('year').toDate()
+        : dayjs(`${currentYear}-${month}-01`).endOf('month').toDate();
+
+    console.log(firstDay, lastDay, month);
+
+    const collectionRef = collection(dbFirestore, FIREBASE.COLLECTIONS.MATCHES);
+
+    const docRef =
+      month === '00'
+        ? collectionRef
+        : query(
+            collectionRef,
+            where('createdAt', '>=', firstDay),
+            where('createdAt', '<=', lastDay)
+          );
+
+    const unsubscribe = onSnapshot(docRef, (snapshot) => {
+      const data: Array<IPlayer> = [];
+
+      snapshot.forEach((doc) => {
+        const res = doc.data() as IMatchState;
+        const playersScore = res.playersScoreOnTheDay;
+
+        playersScore.forEach((player) => {
+          const dataIndex = data.findIndex(
+            (item) =>
+              item.fullName.toLowerCase() === player.fullName.toLowerCase()
+          );
+
+          if (dataIndex !== -1) {
+            data[dataIndex].assists += player.assists;
+            data[dataIndex].goals += player.goals;
+            data[dataIndex].saves += player.saves;
+            data[dataIndex].tackles += player.tackles;
+            data[dataIndex].matches += 1;
+          } else {
+            if (player.fullName.trim()) {
+              data.push({
+                id: player.fullName.toLowerCase().replaceAll(' ', '_'),
+                fullName: player.fullName,
+                assists: player.assists,
+                goals: player.goals,
+                matches: 1,
+                name: player.name,
+                saves: player.saves,
+                tackles: player.tackles,
+              });
+            }
+          }
+        });
+      });
+
+      set({ scorePlayers: data });
     });
 
     return unsubscribe;

@@ -6,9 +6,8 @@ import { useCallback } from 'react';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-import { InstallButton } from '@/components/InstallButton';
+// import { InstallButton } from '@/components/InstallButton';
 import { MainContainer } from '@/components/MainContainer';
-import { ModalLoading } from '@/components/ModalLoading';
 import { Spacing } from '@/components/Spacing';
 
 import { ROUTES } from '@/paths';
@@ -33,7 +32,9 @@ export default function Home() {
       signIn({
         email: email,
         password: password,
-      }).then(() => navigate(ROUTES.AUTHENTICATED.HOME));
+      }).then(() => {
+        return navigate(ROUTES.AUTHENTICATED.HOME);
+      });
     },
     [signIn, navigate]
   );
@@ -42,14 +43,17 @@ export default function Home() {
     signIn({
       email: 'guest@jumentussc.com',
       password: 'Juve@2024',
-    }).then(() => navigate(ROUTES.AUTHENTICATED.HOME));
+    }).then(() => {
+      console.log('home');
+      return navigate(ROUTES.AUTHENTICATED.HOME);
+    });
   }, [navigate, signIn]);
 
   return (
     <MainContainer>
-      <div>
+      {/* <div>
         <InstallButton containerStyle="mt-8" />
-      </div>
+      </div> */}
 
       <Image
         className="self-center"
@@ -67,7 +71,7 @@ export default function Home() {
         />
         <Input
           label="Senha:"
-          type="password"
+          password
           value={formik.values.password}
           onChange={formik.handleChange('password')}
         />
@@ -76,18 +80,16 @@ export default function Home() {
         )}
         <Spacing size="XS" direction="X" />
         <Button
-          variant="solid"
+          isLoading={loading.signIn}
+          label="Entrar"
           onClick={() => formik.handleSubmit()}
-          text="Entrar"
         />
         <Button
-          variant="outlined"
           onClick={handleSignInGuest}
-          text="Acessar sem login"
+          variant="secondary"
+          label="Acessar sem login"
         />
       </form>
-
-      <ModalLoading isVisible={loading.signIn} />
     </MainContainer>
   );
 }

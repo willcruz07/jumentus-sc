@@ -16,7 +16,6 @@ export default function History() {
       <Spacing direction="X" size="LG" />
 
       <Select
-        containerStyle={`mt-4`}
         label="Filtrar data:"
         onChange={() => null}
         options={[

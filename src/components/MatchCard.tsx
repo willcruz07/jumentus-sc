@@ -58,7 +58,9 @@ export function MatchCard() {
       onClick={handleNavigate}
       className="mt-6 flex flex-col rounded-lg border border-gray-800 bg-gray-900 p-4 shadow-sm hover:bg-gray-950"
     >
-      <h1 className="text-center font-sans text-xl font-bold">{title}</h1>
+      <h1 className="text-center font-sans text-lg font-semibold text-slate-300">
+        {title}
+      </h1>
       {waitingForEvent && (
         <>
           <h4 className="text-center font-mono text-xs text-gray-500">

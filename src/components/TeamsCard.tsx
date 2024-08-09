@@ -37,33 +37,35 @@ export function TeamsCard({
       >
         <div className="grid w-full grid-cols-6">
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">V.</h5>
-            <h6 className="font-sans text-sm text-gray-400">{win}</h6>
+            <h5 className="font-sans text-sm font-bold text-slate-300">V.</h5>
+            <h6 className="font-sans text-sm text-slate-500">{win}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">E.</h5>
-            <h6 className="font-sans text-sm text-gray-400">{draw}</h6>
+            <h5 className="font-sans text-sm font-bold text-slate-300">E.</h5>
+            <h6 className="font-sans text-sm text-slate-500">{draw}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">D.</h5>
-            <h6 className="font-sans text-sm text-gray-400">{loss}</h6>
+            <h5 className="font-sans text-sm font-bold text-slate-300">D.</h5>
+            <h6 className="font-sans text-sm text-slate-500">{loss}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">GP.</h5>
-            <h6 className="font-sans text-sm text-gray-400">{goalsScored}</h6>
+            <h5 className="font-sans text-sm font-bold text-slate-300">GP.</h5>
+            <h6 className="font-sans text-sm text-slate-500">{goalsScored}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">GC.</h5>
-            <h6 className="font-sans text-sm text-gray-400">{goalsConceded}</h6>
+            <h5 className="font-sans text-sm font-bold text-slate-300">GC.</h5>
+            <h6 className="font-sans text-sm text-slate-500">
+              {goalsConceded}
+            </h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-semibold">SG.</h5>
-            <h6 className="font-sans text-sm text-gray-400">
+            <h5 className="font-sans text-sm font-bold text-slate-300">SG.</h5>
+            <h6 className="font-sans text-sm text-slate-500">
               {goalsScored - goalsConceded >= 0
                 ? goalsScored - goalsConceded
                 : goalsScored - goalsConceded}

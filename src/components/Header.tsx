@@ -6,7 +6,7 @@ import { ROUTES } from '@/paths';
 import { useAuth } from '@/store/useAuth';
 import { ArrowBigLeftDash, DoorOpen } from 'lucide-react';
 
-import { ButtonIcon } from './Button';
+import { Button } from './Button';
 import { InstallButton } from './InstallButton';
 
 interface IProps {
@@ -27,11 +27,11 @@ export function Header({ canGoBack }: IProps) {
     <div className="flex min-h-full w-full flex-col">
       <div className="flex min-h-full w-full items-center justify-between">
         <Image width={128} height={128} src={'/img/logo.png'} alt="Logo" />
-        <ButtonIcon
-          text={canGoBack ? 'Voltar' : 'Sair'}
-          icon={canGoBack ? <ArrowBigLeftDash /> : <DoorOpen />}
+        <Button
+          label={canGoBack ? 'Voltar' : 'Sair'}
+          lefIcon={canGoBack ? <ArrowBigLeftDash /> : <DoorOpen />}
           onClick={() => (canGoBack ? goBack() : handleSignOut())}
-          variant="solid"
+          variant="secondary"
         />
       </div>
       <div className="my-4">

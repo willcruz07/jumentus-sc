@@ -50,6 +50,8 @@ export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<
         set({ currentUser: result.user });
       })
       .catch((error) => {
+        setLoadingState(useAuth, 'signIn', false);
+
         setErrorState(
           useAuth,
           'signIn',
@@ -58,9 +60,6 @@ export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<
             'Verifique o email e a senha'
           )
         );
-      })
-      .finally(() => {
-        setLoadingState(useAuth, 'signIn', false);
       });
   },
 

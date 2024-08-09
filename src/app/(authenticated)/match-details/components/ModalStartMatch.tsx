@@ -63,8 +63,8 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
         </div>
         <div className="flex flex-col">
           <div className="relative">
-            <ul className="my-6 flex flex-row sm:flex-row">
-              <li className="-mt-px inline-flex items-center gap-x-2.5 rounded-l-lg border bg-white px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
+            <ul className="my-6 flex w-full sm:flex-row">
+              <li className="-mt-px inline-flex flex-1 items-center gap-x-2.5 rounded-l-lg border border-slate-600 bg-transparent px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 <div className="relative flex w-full items-start">
                   <div className="flex h-5 items-center">
                     <input
@@ -78,14 +78,14 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-1-time-1"
-                    className="ms-3 block w-full text-nowrap text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full flex-nowrap text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 1
                   </label>
                 </div>
               </li>
 
-              <li className="-mt-px inline-flex items-center gap-x-2.5 border bg-white px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
+              <li className="-mt-px inline-flex flex-1 items-center gap-x-2.5 border border-slate-600 bg-transparent px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 <div className="relative flex w-full items-start">
                   <div className="flex h-5 items-center">
                     <input
@@ -99,14 +99,14 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-2-time-1"
-                    className="ms-3 block w-full text-nowrap text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full flex-nowrap text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 2
                   </label>
                 </div>
               </li>
 
-              <li className="-mt-px inline-flex items-center gap-x-2.5 rounded-r-lg border bg-white px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
+              <li className="-mt-px inline-flex flex-1 items-center gap-x-2.5 rounded-r-lg border border-slate-600 bg-transparent px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 <div className="relative flex w-full items-start">
                   <div className="flex h-5 items-center">
                     <input
@@ -120,7 +120,7 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-3-time-1"
-                    className="ms-3 block w-full text-nowrap text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full flex-nowrap text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 3
                   </label>
@@ -133,13 +133,13 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
             Vs
           </h1>
 
-          <div>
-            <ul className="my-6 flex flex-row sm:flex-row">
-              <li className="-mt-px inline-flex items-center gap-x-2.5 rounded-l-lg border bg-white px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
+          <div className="relative">
+            <ul className="my-6 flex w-full sm:flex-row">
+              <li className="-mt-px inline-flex flex-1 items-center gap-x-2.5 rounded-l-lg border border-slate-600 bg-transparent px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 <div className="relative flex w-full items-start">
                   <div className="flex h-5 items-center">
                     <input
-                      id="hs-horizontal-list-group-item-radio-1-time-2"
+                      id="hs-horizontal-list-group-item-radio-2-time-1"
                       name="hs-horizontal-list-group-item-radio-2"
                       type="radio"
                       disabled={time1 === 'team_1'}
@@ -149,14 +149,14 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-1-time-2"
-                    className="ms-3 block w-full text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full flex-nowrap text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 1
                   </label>
                 </div>
               </li>
 
-              <li className="-mt-px inline-flex items-center gap-x-2.5 border bg-white px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
+              <li className="-mt-px inline-flex flex-1 items-center gap-x-2.5 border border-slate-600 bg-transparent px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 <div className="relative flex w-full items-start">
                   <div className="flex h-5 items-center">
                     <input
@@ -170,18 +170,18 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                   </div>
                   <label
                     htmlFor="hs-horizontal-list-group-item-radio-2-time-2"
-                    className="ms-3 block w-full text-sm text-gray-600 dark:text-neutral-500"
+                    className="ms-3 block w-full flex-nowrap text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 2
                   </label>
                 </div>
               </li>
 
-              <li className="-mt-px inline-flex items-center gap-x-2.5 rounded-r-lg border bg-white px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
+              <li className="-mt-px inline-flex flex-1 items-center gap-x-2.5 rounded-r-lg border border-slate-600 bg-transparent px-4 py-3 text-sm font-medium text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-white">
                 <div className="relative flex w-full items-start">
                   <div className="flex h-5 items-center">
                     <input
-                      id="hs-horizontal-list-group-item-radio-3-time-2"
+                      id="hs-horizontal-list-group-item-radio-2-time-3"
                       name="hs-horizontal-list-group-item-radio-2"
                       type="radio"
                       disabled={time1 === 'team_3'}
@@ -190,8 +190,8 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
                     />
                   </div>
                   <label
-                    htmlFor="hs-horizontal-list-group-item-radio-3-time-2"
-                    className="ms-3 block w-full text-sm text-gray-600 dark:text-neutral-500"
+                    htmlFor="hs-horizontal-list-group-item-radio-2-time-3"
+                    className="ms-3 block w-full flex-nowrap text-nowrap text-sm text-gray-600 dark:text-neutral-500"
                   >
                     Time - 3
                   </label>
@@ -201,12 +201,13 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
           </div>
 
           <div className="flex gap-4 pt-5">
-            <Button text="Cancelar" variant="outlined" onClick={onCancel} />
             <Button
-              text="Confirmar"
-              variant="solid"
-              onClick={handleStartMatches}
+              label="Cancelar"
+              className="w-full"
+              variant="secondary"
+              onClick={onCancel}
             />
+            <Button label="Confirmar" onClick={handleStartMatches} />
           </div>
         </div>
       </div>

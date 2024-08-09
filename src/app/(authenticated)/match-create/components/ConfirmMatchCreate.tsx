@@ -47,8 +47,13 @@ export function ConfirmMatchCreate({ isVisible, onCancel, onConfirm }: IProps) {
           </h4>
 
           <div className="flex gap-4">
-            <Button text="Cancelar" variant="outlined" onClick={onCancel} />
-            <Button text="Confirmar" variant="solid" onClick={onConfirm} />
+            <Button
+              className="w-full"
+              label="Cancelar"
+              variant="secondary"
+              onClick={onCancel}
+            />
+            <Button label="Confirmar" onClick={onConfirm} />
           </div>
         </div>
       </div>

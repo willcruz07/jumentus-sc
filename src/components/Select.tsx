@@ -1,54 +1,77 @@
-interface IOptions {
+import * as React from 'react';
+
+import {
+  Select as SelectUI,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+import { Label } from './ui/label';
+
+export interface ISelectOptions {
   label: string;
   value: string;
 }
 
 interface IProps {
   label: string;
-  options: Array<IOptions>;
+  value: string;
   onChange(value: string): void;
   placeholder?: string;
-  value: string;
-  containerStyle?: string;
+  options: Array<ISelectOptions>;
+  onError?: string;
+  disabled?: boolean;
 }
 
 export function Select({
   label,
   onChange,
   options,
-  containerStyle,
-  placeholder,
   value,
+  placeholder,
+  onError,
+  disabled,
 }: IProps) {
+  const labelOnerror = React.useMemo(() => {
+    return onError ? 'text-red-500 dark:text-red-900' : 'text-slate-500';
+  }, [onError]);
+
   return (
-    <div className={containerStyle}>
-      <label
-        htmlFor="hs-floating-input-email-value"
-        className="mb-1 ml-1 text-sm text-gray-300"
+    <div className="flex flex-col gap-2 bg-transparent dark:bg-transparent">
+      <Label
+        className={`${labelOnerror}`}
+        aria-disabled={disabled}
+        htmlFor={label}
       >
         {label}
-      </label>
-      <select
-        data-hs-select={`{
-        "placeholder": "${placeholder ?? ''}",
-        "toggleTag": "<button type=\\"button\\"></button>",
-        "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative py-3 px-4 pe-9 flex text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:border-amber-500 focus:ring-amber-500 before:absolute before:inset-0 before:z-[1] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400",
-        "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-gray-700 dark:[&::-webkit-scrollbar-thumb]:bg-gray-500 dark:bg-gray-900 dark:border-gray-700",
-        "optionClasses": "py-2 px-4 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-200 dark:focus:bg-gray-800",
-        "optionTemplate": "<div class=\\"flex justify-between items-center w-full\\"><span data-title></span><span class=\\"hidden hs-selected:block\\"><svg class=\\"flex-shrink-0 size-3.5 text-amber-600 dark:text-amber-500\\" xmlns=\\"http:.w3.org/2000/svg\\" width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"2\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\"><polyline points=\\"20 6 9 17 4 12\\"/></svg></span></div>",
-        "extraMarkup": "<div class=\\"absolute top-1/2 end-3 -translate-y-1/2\\"><svg class=\\"flex-shrink-0 size-3.5 text-gray-500 dark:text-gray-500\\" xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"2\\" stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\"><path d=\\"m7 15 5 5 5-5\\"/><path d=\\"m7 9 5-5 5 5\\"/></svg></div>"
-        }`}
-        className="hidden"
-        onChange={(e) => onChange(e.target.value)}
-        value={value}
-      >
-        <option value={''}>{''}</option>
-        {options.map(({ label, value }, index) => (
-          <option key={index} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
+      </Label>
+
+      <SelectUI value={value} onValueChange={(v) => onChange(v)}>
+        <SelectTrigger className="h-10 border-slate-600 bg-transparent text-slate-300 outline-none placeholder:text-slate-300 focus-within:ring-0 focus:border-2 focus:border-slate-800 focus:ring-0 focus:ring-transparent dark:bg-transparent">
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {options.map((opt) => (
+              <SelectItem
+                className="cursor-pointer text-slate-800"
+                key={opt.value}
+                value={opt.value}
+              >
+                {opt.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </SelectUI>
+      {onError && (
+        <span className="text-xs italic text-red-600 dark:text-red-900">
+          {onError ?? ''}
+        </span>
+      )}
     </div>
   );
 }

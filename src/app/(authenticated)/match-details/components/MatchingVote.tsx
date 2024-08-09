@@ -105,10 +105,9 @@ export function MatchingVote() {
       {totals.bestPlayer > 0 && totals.worstPlayers > 0 && (
         // totals.worstPlayers === worstPlayers.length - 1 && (
         <Button
-          containerStyle="my-2 mb-6"
-          text="Finalizar"
+          className="my-2 mb-6"
+          label="Finalizar"
           onClick={handleFinishVotes}
-          variant="solid"
         />
       )}
 
@@ -118,14 +117,14 @@ export function MatchingVote() {
 
       <div className="mb-4 flex h-16 w-full flex-row rounded-lg border border-gray-700">
         <button
-          className={`w-full rounded-bl-lg rounded-tl-lg ${tabs === 'baranga' && 'bg-slate-700'}`}
+          className={`w-full rounded-bl-lg rounded-tl-lg text-slate-200 ${tabs === 'baranga' && 'bg-slate-700'}`}
           type="button"
           onClick={() => setTabs('baranga')}
         >
           Baranga
         </button>
         <button
-          className={`w-full rounded-br-lg rounded-tr-lg ${tabs === 'best' && 'bg-slate-700'}`}
+          className={`w-full rounded-br-lg rounded-tr-lg text-slate-200 ${tabs === 'best' && 'bg-slate-700'}`}
           type="button"
           onClick={() => setTabs('best')}
         >

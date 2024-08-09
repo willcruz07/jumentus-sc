@@ -1,57 +1,67 @@
-type TVariant = 'solid' | 'outlined' | 'text';
+import { HTMLAttributes } from 'react';
 
-interface IProps {
-  text: string;
-  id?: string;
-  variant: TVariant;
-  onClick(): void;
-  icon?: React.ReactNode;
-  containerStyle?: string;
+import { LoaderCircle } from 'lucide-react';
+
+import { Button as ButtonUi } from './ui/button';
+
+type TButtonElement = Pick<HTMLAttributes<HTMLButtonElement>, 'className'>;
+type TVariants =
+  | 'default'
+  | 'destructive'
+  | 'outline'
+  | 'secondary'
+  | 'ghost'
+  | 'link';
+
+interface IProps extends TButtonElement {
+  label: string;
+  type?: 'submit' | 'reset' | 'button' | undefined;
+  variant?: TVariants;
+  onClick?(): void;
+  lefIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  isLoading?: boolean;
+  disabled?: boolean;
 }
 
 export function Button({
-  text,
-  id,
-  variant = 'solid',
+  label,
   onClick,
-  containerStyle,
+  variant = 'default',
+  type = 'button',
+  className,
+  lefIcon,
+  rightIcon,
+  isLoading,
+  disabled,
 }: IProps) {
-  const className: Record<TVariant, string> = {
-    solid:
+  const bgVariant: Record<TVariants, string> = {
+    default:
       'flex justify-center w-full py-3 px-4 items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50 disabled:pointer-events-none',
-    outlined:
-      'flex justify-center w-full py-3 px-4 items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:hover:bg-gray-800',
-
-    text: 'flex justify-center w-full py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700',
+    outline: 'border-2 dark:text-slate-400 dark:hover:bg-slate-900',
+    secondary:
+      'bg-slate-800 transition-all ease-in-out text-slate-200 hover:bg-slate-900 dark:from-slate-800 dark:to-slate-600 dark:text-slate-300',
+    destructive: '',
+    ghost: '',
+    link: '',
   };
   return (
-    <button
-      id={id}
-      type="button"
+    <ButtonUi
+      disabled={isLoading || disabled}
+      type={type}
+      variant={variant}
       onClick={onClick}
-      className={`${className[variant]} ${containerStyle}`}
+      className={`h-12 text-sm font-semibold outline-none ${bgVariant[variant]} ${className}`}
     >
-      {text}
-    </button>
-  );
-}
-
-export function ButtonIcon({
-  onClick,
-  text,
-  containerStyle,
-  icon,
-  id,
-}: IProps) {
-  return (
-    <button
-      id={id}
-      className={`flex ${containerStyle} h-min items-center justify-center gap-2 rounded-lg border border-gray-400 px-5 py-3 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-gray-950 dark:text-white dark:hover:bg-neutral-800`}
-      type="button"
-      onClick={onClick}
-    >
-      {icon}
-      {text}
-    </button>
+      {isLoading ? (
+        <LoaderCircle className="animate-spin text-slate-100" />
+      ) : (
+        <>
+          {lefIcon}
+          {label}
+          {rightIcon}
+        </>
+      )}
+    </ButtonUi>
   );
 }

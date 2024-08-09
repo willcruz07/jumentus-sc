@@ -231,15 +231,17 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
         details?.matchId ?? ''
       );
 
-      await updateDoc(docRef, {
-        matchInProgress: {
-          ...details.matchInProgress,
-          playersWhoScored: [
-            ...(details.matchInProgress?.playersWhoScored ?? []),
-            name,
-          ],
-        },
-      });
+      if (details?.matchInProgress) {
+        await updateDoc(docRef, {
+          matchInProgress: {
+            ...details.matchInProgress,
+            playersWhoScored: [
+              ...(details.matchInProgress?.playersWhoScored ?? []),
+              name,
+            ],
+          },
+        });
+      }
     } catch (error) {
       console.error(error);
     } finally {

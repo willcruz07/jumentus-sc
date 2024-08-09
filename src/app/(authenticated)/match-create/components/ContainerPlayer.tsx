@@ -188,11 +188,7 @@ export function ContainerPlayer({
               </li>
             </ul>
 
-            <Button
-              text="Confirmar"
-              onClick={handleConfirmTeam}
-              variant="solid"
-            />
+            <Button label="Confirmar" onClick={handleConfirmTeam} />
           </div>
         </div>
       )}

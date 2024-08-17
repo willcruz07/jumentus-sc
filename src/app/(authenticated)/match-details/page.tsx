@@ -210,7 +210,7 @@ export default function MatchDetails() {
     <MainContainer>
       <Header canGoBack />
 
-      {!matchInProgress && isAdmin && (
+      {!matchInProgress && (
         <Button
           className="my-6"
           label="Definir confronto"
@@ -222,7 +222,7 @@ export default function MatchDetails() {
         <>
           <div className="mb-4 mt-2 flex w-full flex-col items-center justify-center rounded-lg border border-gray-800 bg-gray-900 py-6 shadow-sm">
             <div className="flex flex-col items-center">
-              {isAdmin && (
+              {
                 <button
                   type="button"
                   onClick={handleExecutionTimer}
@@ -230,7 +230,7 @@ export default function MatchDetails() {
                 >
                   {matchInProgress?.started ? <Pause /> : <Play />}
                 </button>
-              )}
+              }
               <h3 className="mb-4 text-center font-mono text-2xl text-gray-400">
                 {!countDown || isNaN(countDown.minutes)
                   ? '--:--'
@@ -241,7 +241,7 @@ export default function MatchDetails() {
             <div className="flex flex-row items-center self-center">
               <div className="flex flex-row gap-3">
                 <div className="flex flex-col gap-3 text-gray-600">
-                  {isAdmin && (
+                  {
                     <button
                       type="button"
                       onClick={() => {
@@ -251,8 +251,8 @@ export default function MatchDetails() {
                     >
                       <CirclePlus />
                     </button>
-                  )}
-                  {isAdmin && (
+                  }
+                  {
                     <button
                       type="button"
                       onClick={() => {
@@ -266,7 +266,7 @@ export default function MatchDetails() {
                     >
                       <CircleMinus />
                     </button>
-                  )}
+                  }
                 </div>
                 <div className="rounded-lg bg-gray-800 p-2">
                   <div
@@ -318,7 +318,7 @@ export default function MatchDetails() {
                   </div>
                 </div>
                 <div className="flex flex-col gap-3 text-gray-600">
-                  {isAdmin && (
+                  {
                     <button
                       type="button"
                       onClick={() => {
@@ -328,8 +328,8 @@ export default function MatchDetails() {
                     >
                       <CirclePlus />
                     </button>
-                  )}
-                  {isAdmin && (
+                  }
+                  {
                     <button
                       type="button"
                       onClick={() => {
@@ -343,13 +343,13 @@ export default function MatchDetails() {
                     >
                       <CircleMinus />
                     </button>
-                  )}
+                  }
                 </div>
               </div>
             </div>
           </div>
 
-          {matchInProgress && isAdmin && (
+          {matchInProgress && (
             <Button
               className="my-2"
               label="Finalizar partida"
@@ -370,7 +370,7 @@ export default function MatchDetails() {
                   key={key}
                   {...team}
                   onClick={() => {
-                    if (!isAdmin) return;
+                    // if (!isAdmin) return;
 
                     setTeamSelected({
                       draw: team.draw,
@@ -449,7 +449,7 @@ export default function MatchDetails() {
                   return (
                     <PlayerHistoryCard
                       onEditPlayer={() => {
-                        if (!isAdmin) return;
+                        // if (!isAdmin) return;
 
                         setPlayerSelected({ ...player });
                         setModalPlayerScore(true);

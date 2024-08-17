@@ -119,4 +119,24 @@ export const playersList = [
     fullName: 'Miguel Dias',
     shortName: 'Miguel',
   },
+  {
+    fullName: 'Vitinho Rocha',
+    shortName: 'Vitinho',
+  },
+  {
+    fullName: 'Iaguinho',
+    shortName: 'Iaguinho',
+  },
+  {
+    fullName: 'Lucas Leite',
+    shortName: 'Lucas',
+  },
+  {
+    fullName: 'Brunao',
+    shortName: 'Brunao',
+  },
+  {
+    fullName: 'Renan Mattos',
+    shortName: 'Renan Mattos',
+  },
 ];

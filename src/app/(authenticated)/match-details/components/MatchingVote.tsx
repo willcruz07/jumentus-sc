@@ -172,6 +172,8 @@ export function MatchingVote() {
               saves={player.saves}
               tackles={player.tackles}
               votes={player.votes}
+              manOfTheMatch={player?.manOfTheMatch ?? 0}
+              shitOfTheMatch={player?.shitOfTheMatch ?? 0}
               onAddVote={() => {
                 handlePlayersVotes(player, 'add');
               }}

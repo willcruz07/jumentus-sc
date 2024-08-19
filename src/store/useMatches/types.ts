@@ -104,6 +104,8 @@ export interface IPlayersScoreOnTheDay {
   assists: number;
   tackles: number;
   saves: number;
+  manOfTheMatch: number;
+  shitOfTheMatch: number;
 }
 
 export interface ITeamDetails {

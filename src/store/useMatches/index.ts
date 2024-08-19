@@ -98,6 +98,8 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<
           goals: 0,
           saves: 0,
           tackles: 0,
+          manOfTheMatch: 0,
+          shitOfTheMatch: 0,
         })),
       } as IMatchState);
     } catch (error) {

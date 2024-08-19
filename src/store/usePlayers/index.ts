@@ -81,6 +81,8 @@ export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<
           name: res.name,
           saves: res.saves,
           tackles: res.tackles,
+          manOfTheMatch: 0,
+          shitOfTheMatch: 0,
         });
       });
 
@@ -121,11 +123,20 @@ export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<
       snapshot.forEach((doc) => {
         const res = doc.data() as IMatchState;
         const playersScore = res.playersScoreOnTheDay;
+        const shitPlayer = res.worstPlayerOfTheDay;
+        const bestPlayer = res.playerOfTheDay;
 
         playersScore.forEach((player) => {
           const dataIndex = data.findIndex(
             (item) =>
               item.fullName.toLowerCase() === player.fullName.toLowerCase()
+          );
+
+          console.log(
+            bestPlayer?.fullName?.toLowerCase() ===
+              player?.fullName?.toLowerCase(),
+            bestPlayer,
+            'best'
           );
 
           if (dataIndex !== -1) {
@@ -134,6 +145,16 @@ export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<
             data[dataIndex].saves += player.saves;
             data[dataIndex].tackles += player.tackles;
             data[dataIndex].matches += 1;
+            data[dataIndex].manOfTheMatch +=
+              bestPlayer?.fullName?.toLowerCase() ===
+              player?.fullName?.toLowerCase()
+                ? 1
+                : 0;
+            data[dataIndex].shitOfTheMatch +=
+              shitPlayer?.fullName?.toLowerCase() ===
+              player?.fullName?.toLowerCase()
+                ? 1
+                : 0;
           } else {
             if (player.fullName.trim()) {
               data.push({
@@ -145,11 +166,15 @@ export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<
                 name: player.name,
                 saves: player.saves,
                 tackles: player.tackles,
+                manOfTheMatch: 0,
+                shitOfTheMatch: 0,
               });
             }
           }
         });
       });
+
+      console.log(data, 'DDD');
 
       set({ scorePlayers: data });
     });

@@ -461,6 +461,8 @@ export default function MatchDetails() {
                       name={player.name}
                       saves={player.saves}
                       tackles={player.tackles}
+                      manOfTheMatch={0}
+                      shitOfTheMatch={0}
                       teamColor={getTeamColors(
                         getPlayerTeam(player.fullName) as keyof ITeams
                       )}
@@ -495,6 +497,8 @@ export default function MatchDetails() {
           name={playerSelected?.name}
           saves={playerSelected?.saves}
           tackles={playerSelected?.tackles}
+          manOfTheMatch={0}
+          shitOfTheMatch={0}
           onCancel={() => setModalPlayerScore(false)}
           onConfirm={(data) => {
             if (data.goals > playerSelected.goals) {

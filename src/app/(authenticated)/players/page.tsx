@@ -14,15 +14,13 @@ export default function Players() {
   const { scorePlayers, startListenerScorePlayers } = usePlayers();
 
   const [sort, setSort] = useState<keyof IPlayer>('name');
-  const [month, setMonth] = useState<string>('07');
+  const [month, setMonth] = useState<string>('00');
 
   useEffect(() => {
     const unsubscribe = startListenerScorePlayers(month);
 
     return () => unsubscribe();
   }, [month]);
-
-  console.log(scorePlayers, '`PP');
 
   const sortPlayers = (a: IPlayer, b: IPlayer, prop: keyof IPlayer) => {
     if (typeof a[prop] === 'string' && typeof b[prop] === 'string') {
@@ -133,7 +131,7 @@ export default function Players() {
         />
       </div>
 
-      <div className="mt-6 flex flex-col gap-2">
+      <div className="mt-6 flex flex-col gap-4">
         {scorePlayers
           ?.sort((a, b) => sortPlayers(a, b, sort))
           ?.map((data) => <PlayersCard key={data.id} {...data} />)}

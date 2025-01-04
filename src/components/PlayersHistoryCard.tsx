@@ -26,7 +26,7 @@ export function PlayerHistoryCard({
     >
       <div className="ml-1 flex min-w-20 flex-col items-center gap-1 pl-3 pr-6">
         <img
-          className="inline-block size-12 rounded-full object-cover"
+          className="inline-block size-14 rounded-full object-cover"
           src={`/img/players/${fullName?.toLowerCase().replace(' ', '_')}.jpg`}
           alt="Image Description"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +36,7 @@ export function PlayerHistoryCard({
           }}
         />
 
-        <h1 className="w-24 truncate text-nowrap text-center font-sans text-sm font-bold text-white drop-shadow-lg">
+        <h1 className="w-24 break-words text-center font-sans text-sm font-bold text-white drop-shadow-lg">
           {name}
         </h1>
       </div>

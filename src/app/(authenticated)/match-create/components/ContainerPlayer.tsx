@@ -13,6 +13,7 @@ interface IProps {
   onClick?(value: string): void;
   teams?: ITeams;
   goalKeeperOk?: boolean;
+  className?: string;
 }
 
 export function ContainerPlayer({
@@ -22,6 +23,7 @@ export function ContainerPlayer({
   onClick,
   goalKeeperOk,
   teams,
+  className,
 }: IProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [teamSelected, setTeamSelected] = useState('');
@@ -59,7 +61,7 @@ export function ContainerPlayer({
       <button
         data-hs-overlay="#hs-slide-up-animation-modal"
         type="button"
-        className={`flex min-w-20 ${flexCol ? 'flex-col' : ''} items-center gap-3 pl-3 pr-6`}
+        className={`flex min-w-24 ${flexCol ? 'flex-col' : ''} ${className} items-center gap-3`}
         onClick={() => onClick && setModalOpen(!modalOpen)}
       >
         <img
@@ -73,7 +75,7 @@ export function ContainerPlayer({
           }}
         />
         <h1
-          className={`overflow-hidden text-ellipsis text-nowrap font-sans text-${flexCol ? 'sm' : 'lg'} ${flexCol ? 'text-gray-400' : 'text-gray-200'} ${onClick ? 'hover:bg-gray-950' : ''}`}
+          className={`overflow-hidden text-ellipsis break-words font-sans text-${flexCol ? 'sm' : 'lg'} ${flexCol ? 'text-gray-400' : 'text-gray-200'} ${onClick ? 'hover:bg-gray-950' : ''}`}
         >
           {name}
         </h1>

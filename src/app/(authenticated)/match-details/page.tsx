@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
@@ -12,21 +12,19 @@ import { PlayerHistoryCard } from '@/components/PlayersHistoryCard';
 import { Select } from '@/components/Select';
 import { TeamsCard } from '@/components/TeamsCard';
 
-import {
-  ITimeRemaining,
-  calculateTimeRemaining,
-  getTeamColors,
-} from '@/utils/lib';
+import { getTeamColors } from '@/utils/lib';
 
 import { useAuth } from '@/store/useAuth';
 import { useMatches } from '@/store/useMatches';
 import {
+  IMatchInProgress,
   IMatchScores,
   IPlayersScoreOnTheDay,
   ITeamDetails,
   ITeams,
 } from '@/store/useMatches/types';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { CircleMinus, CirclePlus, Pause, Play } from 'lucide-react';
 
 import { MatchingVote } from './components/MatchingVote';
@@ -34,32 +32,41 @@ import { ModalConfirmFinishDay } from './components/ModalConfirmFinishDay';
 import { ModalConfirmFinishMatch } from './components/ModalConfirmFinishMatch';
 import { ModalDefineMatch } from './components/ModalStartMatch';
 
+dayjs.extend(duration);
+
 export default function MatchDetails() {
-  const {
-    startListenerOfOnGoingMatches,
-    teamScoresOnTheDay,
-    inProgress,
-    matchInProgress,
-    startMatch,
-    pauseMatch,
-    restartMatch,
-    setGoals,
-    matchTeams,
-    inMatchingVote,
-    setPlayersScoreOnTheDay,
-    setPlayerWhoScored,
-    setFinishMatch,
-    setFinishDay,
-    waitingForEvent,
-    setTeamScoresOnTheDay,
-    playersScoreOnTheDay,
-  } = useMatches();
+  const startListenerOfOnGoingMatches = useMatches(
+    (state) => state.startListenerOfOnGoingMatches
+  );
+  const teamScoresOnTheDay = useMatches((state) => state.teamScoresOnTheDay);
+  const inProgress = useMatches((state) => state.inProgress);
+  const match = useMatches((state) => state.matchInProgress);
+  const startMatch = useMatches((state) => state.startMatch);
+  const pauseMatch = useMatches((state) => state.pauseMatch);
+  const restartMatch = useMatches((state) => state.restartMatch);
+  const setGoals = useMatches((state) => state.setGoals);
+  const matchTeams = useMatches((state) => state.matchTeams);
+  const inMatchingVote = useMatches((state) => state.inMatchingVote);
+  const setPlayersScoreOnTheDay = useMatches(
+    (state) => state.setPlayersScoreOnTheDay
+  );
+  const setPlayerWhoScored = useMatches((state) => state.setPlayerWhoScored);
+  const setFinishMatch = useMatches((state) => state.setFinishMatch);
+  const setFinishDay = useMatches((state) => state.setFinishDay);
+  const waitingForEvent = useMatches((state) => state.waitingForEvent);
+  const setTeamScoresOnTheDay = useMatches(
+    (state) => state.setTeamScoresOnTheDay
+  );
+  const playersScoreOnTheDay = useMatches(
+    (state) => state.playersScoreOnTheDay
+  );
+
   const { currentUser } = useAuth();
 
   const [modalDefineMatch, setModalDefineMatch] = useState(false);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<keyof IPlayersScoreOnTheDay>('name');
-  const [countDown, setCountDown] = useState<ITimeRemaining>();
+  const [timer, setTimer] = useState('');
   const [playerSelected, setPlayerSelected] = useState<IPlayersScoreOnTheDay>();
   const [teamSelected, setTeamSelected] =
     useState<Omit<ITeamProps, 'onConfirm' | 'onCancel' | 'isVisible'>>();
@@ -68,57 +75,100 @@ export default function MatchDetails() {
   const [modalFinishMatch, setModalFinishMatch] = useState(false);
   const [modalFinishDay, setModalFinishDay] = useState(false);
 
-  const intervalId = useRef<NodeJS.Timeout | null>(null);
+  const [matchInProgress, setMatchInProgress] = useState<IMatchInProgress>();
+
+  // const intervalId = useRef<NodeJS.Timeout | null>(null);
+
+  // useEffect(() => {
+  //   if (matchInProgress?.pausedTime && matchInProgress?.started) {
+  //     const pauseDuration = dayjs().diff(
+  //       dayjs(matchInProgress?.pausedTime),
+  //       'second'
+  //     );
+
+  //     const newStartTime = dayjs(matchInProgress.startTime).add(
+  //       pauseDuration,
+  //       'second'
+  //     );
+
+  //     return startCountDown(newStartTime);
+  //   }
+
+  //   if (matchInProgress?.startTime && matchInProgress.started) {
+  //     return startCountDown(dayjs(matchInProgress?.startTime));
+  //   }
+
+  //   return () => {
+  //     if (intervalId.current) {
+  //       clearInterval(intervalId.current);
+  //     }
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [
+  //   matchInProgress?.startTime,
+  //   matchInProgress?.started,
+  //   matchInProgress?.pausedTime,
+  // ]);
 
   useEffect(() => {
-    if (matchInProgress?.pausedTime && matchInProgress?.started) {
-      const pauseDuration = dayjs().diff(
-        dayjs(matchInProgress?.pausedTime),
-        'second'
-      );
+    if (match) {
+      setMatchInProgress(match);
+    }
+  }, [match]);
 
-      const newStartTime = dayjs(matchInProgress.startTime).add(
-        pauseDuration,
-        'second'
-      );
+  useEffect(() => {
+    let timerId = null;
+    if (matchInProgress?.startTime) {
+      console.log(matchInProgress);
+      const calcTime = () => {
+        const now = dayjs();
+        const diff = now.diff(matchInProgress?.startTime);
+        const minutes = String(Math.floor((diff / 1000 / 60) % 60)).padStart(
+          2,
+          '0'
+        );
+        const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
 
-      return startCountDown(newStartTime);
+        return `${minutes}:${seconds}`;
+      };
+
+      console.log('START');
+      timerId = setInterval(() => {
+        setTimer(calcTime());
+      }, 1000);
     }
 
-    if (matchInProgress?.startTime && matchInProgress.started) {
-      return startCountDown(dayjs(matchInProgress?.startTime));
+    if ((!matchInProgress?.started || matchInProgress == null) && !!timerId) {
+      clearInterval(timerId);
+
+      if (!matchInProgress) {
+        setTimer('00:00');
+      }
     }
 
     return () => {
-      if (intervalId.current) {
-        clearInterval(intervalId.current);
-      }
+      timerId && clearInterval(timerId);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    matchInProgress?.startTime,
-    matchInProgress?.started,
-    matchInProgress?.pausedTime,
-  ]);
+  }, [matchInProgress?.startTime, matchInProgress?.started]);
 
-  const startCountDown = (date: Dayjs) => {
-    if (intervalId.current) {
-      clearInterval(intervalId.current);
-    }
+  // const startCountDown = (date: Dayjs) => {
+  //   if (intervalId.current) {
+  //     clearInterval(intervalId.current);
+  //   }
 
-    intervalId.current = setInterval(() => {
-      if (matchInProgress?.started) {
-        const remaining = calculateTimeRemaining(date);
-        if (remaining.total <= 0) {
-          clearInterval(intervalId.current as NodeJS.Timeout);
-        }
+  //   intervalId.current = setInterval(() => {
+  //     if (matchInProgress?.started) {
+  //       const remaining = calculateTimeRemaining(date);
+  //       if (remaining.total <= 0) {
+  //         clearInterval(intervalId.current as NodeJS.Timeout);
+  //       }
 
-        if (remaining.minutes >= 0 && remaining.seconds >= 0) {
-          setCountDown(remaining);
-        }
-      }
-    }, 1000);
-  };
+  //       if (remaining.minutes >= 0 && remaining.seconds >= 0) {
+  //         setCountDown(remaining);
+  //       }
+  //     }
+  //   }, 1000);
+  // };
 
   useEffect(() => {
     const unsubscribe = startListenerOfOnGoingMatches();
@@ -129,9 +179,9 @@ export default function MatchDetails() {
 
   const handleExecutionTimer = () => {
     if (matchInProgress?.started) {
-      if (intervalId.current) {
-        clearInterval(intervalId.current);
-      }
+      // if (intervalId.current) {
+      //   clearInterval(intervalId.current);
+      // }
       return pauseMatch();
     }
 
@@ -161,7 +211,9 @@ export default function MatchDetails() {
 
   const handleConfirmFinishMatch = () => {
     setFinishMatch();
+    setTimer('00:00');
     setModalFinishMatch(false);
+    setMatchInProgress(undefined);
   };
 
   const handleConfirmFinishDay = () => {
@@ -232,9 +284,10 @@ export default function MatchDetails() {
                 </button>
               }
               <h3 className="mb-4 text-center font-mono text-2xl text-gray-400">
-                {!countDown || isNaN(countDown.minutes)
+                {timer}
+                {/* {!countDown || isNaN(countDown.minutes)
                   ? '--:--'
-                  : `${countDown?.minutes}:${countDown?.seconds?.toString()?.padStart(2, '0')}`}
+                  : `${countDown?.minutes}:${countDown?.seconds?.toString()?.padStart(2, '0')}`} */}
               </h3>
             </div>
 
@@ -371,7 +424,6 @@ export default function MatchDetails() {
                   {...team}
                   onClick={() => {
                     // if (!isAdmin) return;
-
                     setTeamSelected({
                       draw: team.draw,
                       goalsConceded: team.goalsConceded,
@@ -450,7 +502,6 @@ export default function MatchDetails() {
                     <PlayerHistoryCard
                       onEditPlayer={() => {
                         // if (!isAdmin) return;
-
                         setPlayerSelected({ ...player });
                         setModalPlayerScore(true);
                       }}

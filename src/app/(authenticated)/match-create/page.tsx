@@ -266,6 +266,7 @@ export default function MatchCreate() {
             <div className="flex flex-col gap-3">
               {playersSelected?.players?.map((player) => (
                 <ContainerPlayer
+                  className="min-h-12"
                   onClick={(value) =>
                     handleCustomTeam(player, value as keyof ITeams)
                   }
@@ -283,6 +284,7 @@ export default function MatchCreate() {
             <div className="flex flex-col gap-3">
               {playersSelected?.goalKeepers?.map((player) => (
                 <ContainerPlayer
+                  className="min-h-16"
                   onClick={(value) =>
                     handleCustomTeam(player, value as keyof ITeams)
                   }
@@ -334,6 +336,7 @@ export default function MatchCreate() {
 
                 return (
                   <ContainerPlayer
+                    className="min-h-24"
                     flexCol
                     key={player}
                     name={name}

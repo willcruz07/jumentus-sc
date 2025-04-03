@@ -93,9 +93,21 @@ export function ContainerPlayer({ fullName, name, flexCol, onClick, teams, class
           </DialogTitle>
 
           <div className="flex flex-col gap-4">
-            <Button className='bg-blue-800' label="Time - 1" onClick={() => handleConfirmTeam('team_1')} />
-            <Button className='bg-pink-800' label="Time - 2" onClick={() => handleConfirmTeam('team_2')} />
-            <Button className='bg-yellow-700' label="Time - 3" onClick={() => handleConfirmTeam('team_3')} />
+            <Button
+              className="bg-blue-800"
+              label="Time - 1"
+              onClick={() => handleConfirmTeam('team_1')}
+            />
+            <Button
+              className="bg-pink-800"
+              label="Time - 2"
+              onClick={() => handleConfirmTeam('team_2')}
+            />
+            <Button
+              className="bg-yellow-700"
+              label="Time - 3"
+              onClick={() => handleConfirmTeam('team_3')}
+            />
           </div>
         </DialogContent>
       </Dialog>

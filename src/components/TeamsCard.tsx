@@ -16,7 +16,7 @@ export function TeamsCard({
   loss,
   win,
 }: IProps) {
-  console.log(teamColor)
+  console.log(teamColor);
   return (
     <div
       className={`bg-${teamColor} flex flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm`}

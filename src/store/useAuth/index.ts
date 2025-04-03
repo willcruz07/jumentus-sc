@@ -47,14 +47,14 @@ export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<TState
     },
 
     async signInWithGoogle() {
-      if (import.meta.env.DEV) {
-        const response = await signInWithPopup(firebaseAuth, googleProvider);
-        set({
-          currentUser: response.user,
-        });
-      } else {
-        await signInWithRedirect(firebaseAuth, googleProvider);
-      }
+      // if (import.meta.env.DEV) {
+      const response = await signInWithPopup(firebaseAuth, googleProvider);
+      set({
+        currentUser: response.user,
+      });
+      // } else {
+      //   await signInWithRedirect(firebaseAuth, googleProvider);
+      // }
     },
 
     async signIn({ email, password }) {

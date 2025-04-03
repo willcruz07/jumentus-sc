@@ -18,5 +18,10 @@ export function Routes() {
 
   if (loading.checkAuth) return <div className="h-dvh w-dvw bg-slate-950" />;
 
-  return currentUser ? <AppRoutes /> : <AuthRoutes />;
+  return (
+    <div className='h-dvh bg-slate-950'>
+    {currentUser ? <AppRoutes /> : <AuthRoutes />}
+    </div>
+
+  ) 
 }

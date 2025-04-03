@@ -22,8 +22,7 @@ export function PlayerHistoryCard({
   return (
     <div
       onClick={() => (onClick && onClick(name)) || (onEditPlayer && onEditPlayer())}
-      style={{ backgroundColor: teamColor ?? '#111827' }}
-      className={`flex flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm hover:opacity-80`}
+      className={`flex bg-${teamColor} flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm hover:opacity-80`}
     >
       <div className="flex flex-row justify-between overflow-hidden">
         <img

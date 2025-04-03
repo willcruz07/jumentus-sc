@@ -29,9 +29,9 @@ export function omit<T extends object, K extends keyof T>(obj: T, key: K): Omit<
 
 export function getTeamColors(team?: keyof IMatchScores | null) {
   const color: Record<keyof IMatchScores, string> = {
-    team_1: '#E0096F',
-    team_2: '#046497',
-    team_3: '#808d06',
+    team_1: 'blue-800',
+    team_2: 'pink-700',
+    team_3: 'yellow-600',
   };
 
   if (!team) return '#111827';

@@ -324,7 +324,6 @@ export function MatchDetails() {
                       key={key}
                       {...team}
                       onClick={() => {
-                        // if (!isAdmin) return;
                         setTeamSelected({
                           draw: team.draw,
                           goalsConceded: team.goalsConceded,

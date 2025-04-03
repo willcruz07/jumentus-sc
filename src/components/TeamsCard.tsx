@@ -16,10 +16,10 @@ export function TeamsCard({
   loss,
   win,
 }: IProps) {
+  console.log(teamColor)
   return (
     <div
-      style={{ backgroundColor: teamColor }}
-      className="flex flex-col overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-sm"
+      className={`bg-${teamColor} flex flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm`}
     >
       <div className={`flex p-4`}>
         <h1 className="text-2xl font-black text-white">{`Time - ${numberTeam}`}</h1>

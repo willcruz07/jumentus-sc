@@ -1,4 +1,4 @@
-import { omit } from '@/utils/lib';
+import { omit } from '@/lib/utils';
 
 import type { StoreApi, UseBoundStore } from 'zustand';
 
@@ -10,25 +10,17 @@ export interface IDefaultStates<T> {
 export function setLoadingState<T>(
   hook: UseBoundStore<StoreApi<T>>,
   key: keyof T,
-  state?: boolean
+  state?: boolean,
 ) {
   return hook.setState((prevState: T & IDefaultStates<T>) => ({
     ...prevState,
-    loading: state
-      ? { ...prevState.loading, [key]: state }
-      : omit(prevState.loading, key),
+    loading: state ? { ...prevState.loading, [key]: state } : omit(prevState.loading, key),
   }));
 }
 
-export function setErrorState<T>(
-  hook: UseBoundStore<StoreApi<T>>,
-  key: keyof T,
-  message?: string
-) {
+export function setErrorState<T>(hook: UseBoundStore<StoreApi<T>>, key: keyof T, message?: string) {
   return hook.setState((prevState: T & IDefaultStates<T>) => ({
     ...prevState,
-    errors: message
-      ? { ...prevState.errors, [key]: message }
-      : omit(prevState.errors, key),
+    errors: message ? { ...prevState.errors, [key]: message } : omit(prevState.errors, key),
   }));
 }

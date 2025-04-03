@@ -1,16 +1,15 @@
-/* eslint-disable @next/next/no-img-element */
+import { CircleMinus, CirclePlus, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import Logo from '@/assets/logo.png';
 import { Button } from '@/components/Button';
-
 import { IPlayersScoreOnTheDay } from '@/store/useMatches/types';
-import { CircleMinus, CirclePlus } from 'lucide-react';
 
+import { Dialog, DialogClose, DialogContent, DialogTitle } from './ui/dialog';
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface IPlayerData
-  extends Pick<
-    IPlayersScoreOnTheDay,
-    'assists' | 'goals' | 'saves' | 'tackles'
-  > {}
+  extends Pick<IPlayersScoreOnTheDay, 'assists' | 'goals' | 'saves' | 'tackles'> {}
 type TAction = 'add' | 'subtract';
 
 interface IProps extends IPlayersScoreOnTheDay {
@@ -60,92 +59,59 @@ export function ModalPlayerScore({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
-  if (!isVisible) return null;
-
   return (
-    <div className="hs-overlay fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-neutral-800/70">
-      <div className="modal-content animate-fade-in pointer-events-auto mx-4 flex w-full max-w-lg flex-col rounded-xl border border-gray-700 bg-gray-900 p-5 shadow-lg">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-200">
-            {`Dados do jogador`}
-          </h2>
-
+    <Dialog modal onOpenChange={() => onCancel()} open={isVisible}>
+      <DialogContent className="border-slate-700 bg-slate-900 [&>button:last-child]:hidden">
+        <DialogClose asChild>
           <button
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
-            onClick={() => onCancel()}
+            className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100"
+            aria-label="Close"
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <X className="h-5 w-5 text-gray-400" />
           </button>
-        </div>
+        </DialogClose>
+
+        <DialogTitle>
+          <h2 className="text-sm font-semibold text-gray-200 md:text-lg">{`Dados do Jogador`}</h2>
+        </DialogTitle>
+
         <div className="flex flex-col">
           <div className="mb-2 flex flex-col items-center gap-2">
             <img
-              className="inline-block size-32 rounded-full object-cover"
-              src={`/img/players/${fullName?.toLowerCase().replace(' ', '_')}.jpg`}
+              className="inline-block size-40 rounded-full object-cover"
+              src={`/players/${fullName?.toLowerCase().replace(' ', '_')}.jpg`}
               alt="Image Description"
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onError={(e: any) => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                 e.target.onerror === null;
-                e.target.src = '/img/logo.png';
+                e.target.src = Logo;
               }}
             />
-            <h2 className="mb-3 text-2xl font-semibold text-gray-200">
-              {fullName}
-            </h2>
+            <h2 className="mb-3 text-2xl font-semibold text-gray-200">{fullName}</h2>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col items-center">
               <h1 className="mb-1 font-bold text-slate-200">{'GOLS'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('goals', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('goals', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {playerData.goals}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('goals', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{playerData.goals}</h1>
+                <button type="button" onClick={() => onChangeValue('goals', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 font-bold text-slate-200">
-                {'ASSISTENCIAS'}
-              </h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'ASSISTENCIAS'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('assists', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('assists', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {playerData.assists}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('assists', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{playerData.assists}</h1>
+                <button type="button" onClick={() => onChangeValue('assists', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
@@ -153,19 +119,11 @@ export function ModalPlayerScore({
             <div className="flex flex-col items-center">
               <h1 className="mb-1 font-bold text-slate-200">{'FALTAS'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('tackles', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('tackles', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {playerData.tackles}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('tackles', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{playerData.tackles}</h1>
+                <button type="button" onClick={() => onChangeValue('tackles', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
@@ -173,19 +131,11 @@ export function ModalPlayerScore({
             <div className="flex flex-col items-center">
               <h1 className="mb-1 font-bold text-slate-200">{'DEFESAS'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('saves', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('saves', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {playerData.saves}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('saves', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{playerData.saves}</h1>
+                <button type="button" onClick={() => onChangeValue('saves', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
@@ -193,16 +143,10 @@ export function ModalPlayerScore({
           </div>
 
           <div className="mt-8 flex gap-4">
-            <Button
-              label="Cancelar"
-              className="w-full"
-              variant="secondary"
-              onClick={onCancel}
-            />
             <Button label="Confirmar" onClick={() => onConfirm(playerData)} />
           </div>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

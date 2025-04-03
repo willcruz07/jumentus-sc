@@ -1,6 +1,7 @@
 const ROUTES = {
   WITHOUT_AUTH: {
     SIGN_IN: '/sign-in',
+    CHANGE_SIGN_IN: '/change-sign-in',
   },
 
   AUTHENTICATED: {

@@ -1,20 +1,16 @@
-/* eslint-disable @next/next/no-img-element */
+import { CircleMinus, CirclePlus, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/Button';
-
 import { ITeamDetails } from '@/store/useMatches/types';
-import { CircleMinus, CirclePlus } from 'lucide-react';
 
+import { Dialog, DialogClose, DialogContent, DialogTitle } from './ui/dialog';
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface ITeamData
   extends Pick<
     ITeamDetails,
-    | 'win'
-    | 'draw'
-    | 'loss'
-    | 'goalsScored'
-    | 'goalsConceded'
-    | 'goalsDifference'
+    'win' | 'draw' | 'loss' | 'goalsScored' | 'goalsConceded' | 'goalsDifference'
   > {}
 
 type TAction = 'add' | 'subtract';
@@ -75,50 +71,31 @@ export function ModalMatchScores({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
-  const goalsDiff = useMemo(
-    () => teamData.goalsScored - teamData.goalsConceded,
-    [teamData]
-  );
-
-  if (!isVisible) return null;
+  const goalsDiff = useMemo(() => teamData.goalsScored - teamData.goalsConceded, [teamData]);
 
   return (
-    <div className="hs-overlay fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-neutral-800/70">
-      <div className="modal-content animate-fade-in pointer-events-auto mx-4 flex w-full max-w-lg flex-col rounded-xl border border-gray-700 bg-gray-900 p-5 shadow-lg">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-200">
-            {`Dados do time`}
-          </h2>
-
+    <Dialog modal onOpenChange={() => onCancel()} open={isVisible}>
+      <DialogContent className="border-slate-700 bg-slate-900 [&>button:last-child]:hidden">
+        <DialogClose asChild>
           <button
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
-            onClick={() => onCancel()}
+            className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100"
+            aria-label="Close"
           >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <X className="h-5 w-5 text-gray-400" />
           </button>
-        </div>
+        </DialogClose>
+
+        <DialogTitle>
+          <h2 className="text-sm font-semibold text-gray-200 md:text-lg">{`Dados do time`}</h2>
+        </DialogTitle>
+
         <div className="flex flex-col">
           <div className="mb-6 flex flex-col items-center gap-2">
             <div
               style={{ backgroundColor: teamColor }}
               className="flex items-center justify-center rounded-full px-9 py-6"
             >
-              <h2 className="text-3xl font-bold text-slate-100">
-                {numberTeam}
-              </h2>
+              <h2 className="text-3xl font-bold text-slate-100">{numberTeam}</h2>
             </div>
           </div>
 
@@ -126,19 +103,11 @@ export function ModalMatchScores({
             <div className="flex flex-col items-center">
               <h1 className="mb-1 font-bold text-slate-200">{'VITORIAS'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('win', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('win', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {teamData.win}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('win', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{teamData.win}</h1>
+                <button type="button" onClick={() => onChangeValue('win', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
@@ -146,19 +115,11 @@ export function ModalMatchScores({
             <div className="flex flex-col items-center">
               <h1 className="mb-1 font-bold text-slate-200">{'EMPATES'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('draw', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('draw', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {teamData.draw}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('draw', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{teamData.draw}</h1>
+                <button type="button" onClick={() => onChangeValue('draw', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
@@ -166,41 +127,23 @@ export function ModalMatchScores({
             <div className="flex flex-col items-center">
               <h1 className="mb-1 font-bold text-slate-200">{'DERROTAS'}</h1>
               <div className="flex gap-3 text-slate-200">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('loss', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('loss', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {teamData.loss}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('loss', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{teamData.loss}</h1>
+                <button type="button" onClick={() => onChangeValue('loss', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 font-bold text-slate-200">
-                {'GOLS A FAVOR'}
-              </h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'GOLS A FAVOR'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('goalsScored', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('goalsScored', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {teamData.goalsScored}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('goalsScored', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{teamData.goalsScored}</h1>
+                <button type="button" onClick={() => onChangeValue('goalsScored', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
@@ -208,54 +151,38 @@ export function ModalMatchScores({
             <div className="flex flex-col items-center">
               <h1 className="mb-1 font-bold text-slate-200">{'GOLS CONTRA'}</h1>
               <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('goalsConceded', 'subtract')}
-                >
+                <button type="button" onClick={() => onChangeValue('goalsConceded', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
                 </button>
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {teamData.goalsConceded}
-                </h1>
-                <button
-                  type="button"
-                  onClick={() => onChangeValue('goalsConceded', 'add')}
-                >
+                <h1 className="text-3xl font-bold text-slate-300">{teamData.goalsConceded}</h1>
+                <button type="button" onClick={() => onChangeValue('goalsConceded', 'add')}>
                   <CirclePlus className="text-slate-400" />
                 </button>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 font-bold text-slate-200">
-                {'SALDO DE GOLS'}
-              </h1>
+              <h1 className="mb-1 font-bold text-slate-200">{'SALDO DE GOLS'}</h1>
               <div className="flex gap-3">
-                <h1 className="text-3xl font-bold text-slate-300">
-                  {goalsDiff}
-                </h1>
+                <h1 className="text-3xl font-bold text-slate-300">{goalsDiff}</h1>
               </div>
             </div>
           </div>
-
-          <div className="mt-8 flex gap-4">
-            <Button
-              className="w-full"
-              label="Cancelar"
-              variant="secondary"
-              onClick={onCancel}
-            />
-            <Button
-              label="Confirmar"
-              onClick={() =>
-                onConfirm({
-                  ...teamData,
-                  goalsDifference: goalsDiff,
-                })
-              }
-            />
-          </div>
         </div>
-      </div>
-    </div>
+
+        <div className="mt-8 flex justify-center gap-4">
+          <Button className="w-1/3" label="Cancelar" variant="secondary" onClick={onCancel} />
+          <Button
+            className="w-1/3"
+            label="Confirmar"
+            onClick={() =>
+              onConfirm({
+                ...teamData,
+                goalsDifference: goalsDiff,
+              })
+            }
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

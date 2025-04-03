@@ -1,41 +1,40 @@
-import Image from 'next/image';
-import { useCallback } from 'react';
-
-import { useNavigation } from '@/hook/useNavigation';
-import { ROUTES } from '@/paths';
-import { useAuth } from '@/store/useAuth';
+import clsx from 'clsx';
 import { ArrowBigLeftDash, DoorOpen } from 'lucide-react';
+import { useNavigate } from 'react-router';
+
+import Logo from '@/assets/logo.png';
+import { useAuth } from '@/store/useAuth';
 
 import { Button } from './Button';
-import { InstallButton } from './InstallButton';
 
 interface IProps {
   canGoBack?: boolean;
+  hideLogo?: boolean;
 }
 
-export function Header({ canGoBack }: IProps) {
-  const { signOut } = useAuth();
-  const { goBack, navigateTo } = useNavigation();
+export function Header({ canGoBack, hideLogo }: IProps) {
+  const navigate = useNavigate();
+  const signOut = useAuth((state) => state.signOut);
 
-  const handleSignOut = useCallback(() => {
-    signOut().then(() => {
-      navigateTo(ROUTES.WITHOUT_AUTH.SIGN_IN);
-    });
-  }, [signOut, navigateTo]);
+  const handleSignOut = () => {
+    signOut();
+  };
 
   return (
-    <div className="flex min-h-full w-full flex-col">
-      <div className="flex min-h-full w-full items-center justify-between">
-        <Image width={128} height={128} src={'/img/logo.png'} alt="Logo" />
+    <div className="flex w-full flex-col items-center">
+      <div
+        className={clsx('flex min-h-full w-full max-w-prose items-center', {
+          'justify-end': hideLogo,
+          'justify-between': !hideLogo,
+        })}
+      >
+        {!hideLogo && <img src={Logo} className="w-32" alt="Logo" />}
         <Button
           label={canGoBack ? 'Voltar' : 'Sair'}
           lefIcon={canGoBack ? <ArrowBigLeftDash /> : <DoorOpen />}
-          onClick={() => (canGoBack ? goBack() : handleSignOut())}
+          onClick={() => (canGoBack ? navigate(-1) : handleSignOut())}
           variant="secondary"
         />
-      </div>
-      <div className="my-4">
-        <InstallButton />
       </div>
     </div>
   );

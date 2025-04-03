@@ -1,17 +1,39 @@
-import { HTMLAttributes } from 'react';
+// import { ButtonHTMLAttributes, ReactNode } from 'react';
+
+// import { Button as ButtonUI } from '@/components/ui/button';
+
+// interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+//   label: string;
+//   leftIcon?: ReactNode;
+//   rightIcon?: ReactNode;
+//   variant?:
+//     | 'link'
+//     | 'default'
+//     | 'destructive'
+//     | 'outline'
+//     | 'secondary'
+//     | 'ghost'
+//     | null
+//     | undefined;
+// }
+
+// export function Button({ label, leftIcon, rightIcon, variant = 'default', ...rest }: IProps) {
+//   return (
+//     <ButtonUI variant={variant} className="h-12 w-full !bg-amber-700" {...rest}>
+//       {leftIcon}
+//       {label}
+//       {rightIcon}
+//     </ButtonUI>
+//   );
+// }
 
 import { LoaderCircle } from 'lucide-react';
+import { HTMLAttributes } from 'react';
 
 import { Button as ButtonUi } from './ui/button';
 
 type TButtonElement = Pick<HTMLAttributes<HTMLButtonElement>, 'className'>;
-type TVariants =
-  | 'default'
-  | 'destructive'
-  | 'outline'
-  | 'secondary'
-  | 'ghost'
-  | 'link';
+type TVariants = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
 
 interface IProps extends TButtonElement {
   label: string;
@@ -42,7 +64,7 @@ export function Button({
     secondary:
       'bg-slate-800 transition-all ease-in-out text-slate-200 hover:bg-slate-900 dark:from-slate-800 dark:to-slate-600 dark:text-slate-300',
     destructive: '',
-    ghost: '',
+    ghost: 'w-full',
     link: '',
   };
   return (
@@ -51,7 +73,7 @@ export function Button({
       type={type}
       variant={variant}
       onClick={onClick}
-      className={`h-12 text-sm font-semibold outline-none ${bgVariant[variant]} ${className}`}
+      className={`h-12 cursor-pointer text-sm font-semibold outline-none ${bgVariant[variant]} ${className}`}
     >
       {isLoading ? (
         <LoaderCircle className="animate-spin text-slate-100" />

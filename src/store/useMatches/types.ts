@@ -10,6 +10,7 @@ export type TActions = {
   setFinishMatch(): Promise<void>;
   setFinishDay(): Promise<void>;
 
+  restartMatchDay(): Promise<void>;
   setGoals(data: [number, number]): Promise<void>;
   setPlayerWhoScored(name: string): Promise<void>;
   setPlayersScoreOnTheDay(player: IPlayersScoreOnTheDay): Promise<void>;

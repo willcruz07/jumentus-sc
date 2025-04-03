@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import { ITeamDetails } from '@/store/useMatches/types';
 
 interface IProps extends ITeamDetails {
@@ -19,53 +17,47 @@ export function TeamsCard({
   win,
 }: IProps) {
   return (
-    <div className="mt-1 flex flex-row items-center rounded-lg border border-gray-800 bg-gray-900 shadow-sm">
-      <div className="flex min-w-20 flex-col items-center gap-1 pl-3 pr-6">
-        <div className="rounded-lg bg-gray-800 p-1">
-          <div
-            style={{ backgroundColor: teamColor }}
-            className={`flex h-10 w-9 items-center justify-center rounded-lg`}
-          >
-            <h1 className="text-2xl font-black text-white">{numberTeam}</h1>
-          </div>
-        </div>
+    <div
+      style={{ backgroundColor: teamColor }}
+      className="flex flex-col overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-sm"
+    >
+      <div className={`flex p-4`}>
+        <h1 className="text-2xl font-black text-white">{`Time - ${numberTeam}`}</h1>
       </div>
 
       <div
         onClick={() => onClick && onClick()}
-        className="mb-2 mr-2 mt-2 flex w-full flex-row gap-3 rounded-lg border border-gray-800 bg-gray-900 p-2 shadow-sm"
+        className="flex w-full flex-row gap-3 rounded-tl-lg rounded-tr-lg border border-gray-800 bg-gray-900 py-2 shadow-sm"
       >
         <div className="grid w-full grid-cols-6">
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-bold text-slate-300">V.</h5>
-            <h6 className="font-sans text-sm text-slate-500">{win}</h6>
+            <h5 className="text-base font-bold text-slate-300">V.</h5>
+            <h6 className="text-base text-slate-500">{win}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-bold text-slate-300">E.</h5>
-            <h6 className="font-sans text-sm text-slate-500">{draw}</h6>
+            <h5 className="text-base font-bold text-slate-300">E.</h5>
+            <h6 className="text-base text-slate-500">{draw}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-bold text-slate-300">D.</h5>
-            <h6 className="font-sans text-sm text-slate-500">{loss}</h6>
+            <h5 className="text-base font-bold text-slate-300">D.</h5>
+            <h6 className="text-base text-slate-500">{loss}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-bold text-slate-300">GP.</h5>
-            <h6 className="font-sans text-sm text-slate-500">{goalsScored}</h6>
+            <h5 className="text-base font-bold text-slate-300">GP.</h5>
+            <h6 className="text-base text-slate-500">{goalsScored}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-bold text-slate-300">GC.</h5>
-            <h6 className="font-sans text-sm text-slate-500">
-              {goalsConceded}
-            </h6>
+            <h5 className="text-base font-bold text-slate-300">GC.</h5>
+            <h6 className="text-base text-slate-500">{goalsConceded}</h6>
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h5 className="font-sans text-sm font-bold text-slate-300">SG.</h5>
-            <h6 className="font-sans text-sm text-slate-500">
+            <h5 className="text-base font-bold text-slate-300">SG.</h5>
+            <h6 className="text-base text-slate-500">
               {goalsScored - goalsConceded >= 0
                 ? goalsScored - goalsConceded
                 : goalsScored - goalsConceded}

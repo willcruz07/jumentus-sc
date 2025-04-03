@@ -32,14 +32,8 @@ export function TextArea({
   }, [onError]);
 
   return (
-    <div
-      className={`flex flex-col gap-2 bg-transparent dark:bg-transparent ${className}`}
-    >
-      <Label
-        aria-disabled={disabled}
-        className={` ${labelOnerror}`}
-        htmlFor={label}
-      >
+    <div className={`flex flex-col gap-2 bg-transparent dark:bg-transparent ${className}`}>
+      <Label aria-disabled={disabled} className={` ${labelOnerror}`} htmlFor={label}>
         {label}
       </Label>
       <TextAreaUI
@@ -47,13 +41,11 @@ export function TextArea({
         value={value}
         disabled={disabled}
         placeholder={placeholder}
-        className={`${inputOnError} border-slate-500'focus:ring-transparent border-input border-slate-600 bg-transparent text-slate-300 outline-none transition-all ease-in-out placeholder:text-slate-300 focus-within:ring-0 focus:border-2 focus-visible:border-slate-500 focus-visible:ring-0 dark:bg-transparent`}
+        className={`${inputOnError} border-slate-500'focus:ring-transparent text-md h-60 border-slate-600 bg-transparent text-slate-300 transition-all ease-in-out outline-none placeholder:text-slate-300 focus-within:ring-0 focus:border-2 focus-visible:border-slate-500 focus-visible:ring-0 dark:bg-transparent`}
         onChange={(e) => onChange(e.target.value)}
       />
       {onError && (
-        <span className="text-xs italic text-red-600 dark:text-red-900">
-          {onError ?? ''}
-        </span>
+        <span className="text-xs text-red-600 italic dark:text-red-900">{onError ?? ''}</span>
       )}
     </div>
   );

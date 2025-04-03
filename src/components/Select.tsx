@@ -40,17 +40,13 @@ export function Select({
   }, [onError]);
 
   return (
-    <div className="flex flex-col gap-2 bg-transparent dark:bg-transparent">
-      <Label
-        className={`${labelOnerror}`}
-        aria-disabled={disabled}
-        htmlFor={label}
-      >
+    <div className="flex flex-col gap-2">
+      <Label className={`${labelOnerror} text-slate-300`} aria-disabled={disabled} htmlFor={label}>
         {label}
       </Label>
 
       <SelectUI value={value} onValueChange={(v) => onChange(v)}>
-        <SelectTrigger className="h-10 border-slate-600 bg-transparent text-slate-300 outline-none placeholder:text-slate-300 focus-within:ring-0 focus:border-2 focus:border-slate-800 focus:ring-0 focus:ring-transparent dark:bg-transparent">
+        <SelectTrigger className="w-full bg-transparent text-slate-300 outline-none placeholder:text-slate-300 focus-within:ring-0 focus:border-2 focus:ring-0 focus:ring-transparent dark:bg-transparent">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
@@ -68,9 +64,7 @@ export function Select({
         </SelectContent>
       </SelectUI>
       {onError && (
-        <span className="text-xs italic text-red-600 dark:text-red-900">
-          {onError ?? ''}
-        </span>
+        <span className="text-xs text-red-600 italic dark:text-red-900">{onError ?? ''}</span>
       )}
     </div>
   );

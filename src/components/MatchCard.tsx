@@ -1,20 +1,16 @@
+import dayjs from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
 
-import { useNavigation } from '@/hook/useNavigation';
 import { ROUTES } from '@/paths';
 import { useAuth } from '@/store/useAuth';
 import { useMatches } from '@/store/useMatches';
-import dayjs from 'dayjs';
 
 export function MatchCard() {
-  const { navigateTo } = useNavigation();
-  const {
-    startListenerOfOnGoingMatches,
-    waitingForEvent,
-    inProgress,
-    date,
-    inMatchingVote,
-  } = useMatches();
+  const navigate = useNavigate();
+
+  const { startListenerOfOnGoingMatches, waitingForEvent, inProgress, date, inMatchingVote } =
+    useMatches();
   const { currentUser } = useAuth();
 
   const [matchInProgress, setMatchInProgress] = useState(false);
@@ -40,34 +36,29 @@ export function MatchCard() {
 
   const handleNavigate = useCallback(() => {
     if (matchInProgress || inMatchingVote) {
-      return navigateTo(ROUTES.AUTHENTICATED.MATCH_DETAILS);
+      return navigate(ROUTES.AUTHENTICATED.MATCH_DETAILS);
     }
-    return navigateTo(ROUTES.AUTHENTICATED.MATCH_CREATE);
-  }, [matchInProgress, navigateTo, inMatchingVote]);
+    return navigate(ROUTES.AUTHENTICATED.MATCH_CREATE);
+  }, [matchInProgress, inMatchingVote, navigate]);
 
   const isAdmin = useMemo(
-    () => currentUser?.email?.includes('admin@'),
-    [currentUser]
+    () => currentUser?.email?.includes('wellenchorao@gmail.com'),
+    [currentUser],
   );
 
-  if (!inMatchingVote && !inProgress && !waitingForEvent && !isAdmin)
-    return null;
+  if (!inMatchingVote && !inProgress && !waitingForEvent && !isAdmin) return null;
 
   return (
     <div
       onClick={handleNavigate}
-      className="mt-6 flex flex-col rounded-lg border border-gray-800 bg-gray-900 p-4 shadow-sm hover:bg-gray-950"
+      className="mt-6 flex cursor-pointer flex-col rounded-lg border border-gray-800 bg-gray-900 p-4 shadow-sm hover:bg-gray-950"
     >
-      <h1 className="text-center font-sans text-lg font-semibold text-slate-300">
-        {title}
-      </h1>
+      <h1 className="text-center text-2xl font-semibold text-slate-300">{title}</h1>
       {waitingForEvent && (
         <>
-          <h4 className="text-center font-mono text-xs text-gray-500">
-            Este evento ainda não começou
-          </h4>
+          <h4 className="mt-2 text-center text-xs text-gray-500">Este evento ainda não começou</h4>
           {date && (
-            <h4 className="mt-1 text-center font-mono text-xs text-gray-500">
+            <h4 className="mt-1 text-center text-xs text-gray-500">
               {dayjs(date).format('DD/MM/YYYY')}
             </h4>
           )}
@@ -88,9 +79,7 @@ export function MatchCard() {
                 <span className="font-sans text-2xl font-semibold">x</span>
               </div>
 
-              <h3 className="mt-1 text-center font-mono text-sm text-gray-500">
-                07:00
-              </h3>
+              <h3 className="mt-1 text-center font-mono text-sm text-gray-500">07:00</h3>
             </div>
 
             <h1 className="text-4xl font-bold">1</h1>

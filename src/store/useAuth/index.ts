@@ -3,7 +3,6 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
-  signInWithRedirect,
   signOut as signOutFirebase,
 } from 'firebase/auth';
 import { StoreApi, UseBoundStore, create } from 'zustand';

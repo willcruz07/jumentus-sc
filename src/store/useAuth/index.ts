@@ -71,14 +71,15 @@ export const useAuth: UseBoundStore<StoreApi<TState & TActions>> = create<TState
           set({ currentUser: result.user });
         })
         .catch((error) => {
-          setLoadingState(useAuth, 'signIn', false);
 
           setErrorState(
             useAuth,
             'signIn',
             getFirebaseErrorMessageTranslation(error, 'Verifique o email e a senha'),
           );
-        });
+        }).finally(() => {
+          setLoadingState(useAuth, 'signIn', false);
+        })
     },
 
     async signOut() {

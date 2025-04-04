@@ -49,7 +49,7 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<TSt
           votesBestPlayers: [],
           votesWorstPlayers: [],
           inProgress: true,
-          waitingForEvent: true,
+          waitingForEvent: false,
           inMatchingVote: false,
           date: Timestamp.fromDate(data.date) as any,
           createdAt: dayjs().toDate(),

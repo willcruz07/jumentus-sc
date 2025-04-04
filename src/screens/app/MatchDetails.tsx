@@ -210,8 +210,8 @@ export function MatchDetails() {
               </div>
 
               <div className="flex flex-row items-center self-center">
-                <div className="flex flex-row gap-3">
-                  <div className="flex flex-col gap-3 text-gray-600">
+                <div className="flex flex-row gap-2">
+                  <div className="flex flex-col gap-2 text-gray-600">
                     {isAdmin && (
                       <button
                         type="button"
@@ -241,7 +241,7 @@ export function MatchDetails() {
                   </div>
                   <div className="rounded-lg bg-gray-800">
                     <div
-                      className={clsx(`flex h-16 w-16 items-center justify-center rounded-lg`, {
+                      className={clsx(`flex h-14 w-14 items-center justify-center rounded-lg`, {
                         'bg-blue-800': matchInProgress.teams?.[0] == 'team_1',
                         'bg-yellow-600': matchInProgress.teams?.[0] == 'team_2',
                         'bg-pink-700': matchInProgress.teams?.[0] == 'team_3',
@@ -254,7 +254,7 @@ export function MatchDetails() {
                   </div>
                 </div>
 
-                <div className="flex items-center px-6">
+                <div className="flex items-center px-4">
                   <h1 className="text-5xl font-bold text-slate-100">
                     {matchInProgress.goals?.[0]}
                   </h1>
@@ -270,10 +270,10 @@ export function MatchDetails() {
                   </h1>
                 </div>
 
-                <div className="flex flex-row gap-3">
+                <div className="flex flex-row gap-2">
                   <div className="rounded-lg bg-gray-800">
                     <div
-                      className={clsx(`flex h-16 w-16 items-center justify-center rounded-lg`, {
+                      className={clsx(`flex h-14 w-14 items-center justify-center rounded-lg`, {
                         'bg-blue-800': matchInProgress.teams?.[1] == 'team_1',
                         'bg-yellow-600': matchInProgress.teams?.[1] == 'team_2',
                         'bg-pink-700': matchInProgress.teams?.[1] == 'team_3',
@@ -284,7 +284,7 @@ export function MatchDetails() {
                       </h1>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-3 text-gray-600">
+                  <div className="flex flex-col gap-2 text-gray-600">
                     {isAdmin && (
                       <button
                         type="button"

@@ -16,7 +16,7 @@ export function ModalConfirmFinishMatch({ isVisible, onCancel, onConfirm }: IPro
       <DialogContent className="border-slate-700 bg-slate-900 [&>button:last-child]:hidden">
         <DialogClose asChild>
           <button
-            className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100"
+            className="absolute top-4 right-4 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100"
             aria-label="Close"
           >
             <X className="h-5 w-5 text-gray-400" />
@@ -24,7 +24,7 @@ export function ModalConfirmFinishMatch({ isVisible, onCancel, onConfirm }: IPro
         </DialogClose>
 
         <DialogTitle>
-          <h2 className="text-sm font-semibold text-gray-200 md:text-lg">{`Dados do Jogador`}</h2>
+          <h2 className="text-sm font-semibold text-gray-200 md:text-lg">{`Terminar partida`}</h2>
         </DialogTitle>
         <div>
           <h4 className="mb-3 font-light text-gray-200">Confirma o termino desta partida ?</h4>

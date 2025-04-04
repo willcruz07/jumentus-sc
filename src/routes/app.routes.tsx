@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router';
 
+import { AddAdmins } from '@/screens/app/AddAdmins';
 import { Home } from '@/screens/app/Home';
 import { MatchCreate } from '@/screens/app/MatchCreate';
 import { MatchDetails } from '@/screens/app/MatchDetails';
@@ -12,6 +13,7 @@ export function AppRoutes() {
       <Route path="/players" element={<Players />} />
       <Route path="/match-create" element={<MatchCreate />} />
       <Route path="/match-details" element={<MatchDetails />} />
+      <Route path="/add-admins" element={<AddAdmins />} />
       <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   );

@@ -64,7 +64,7 @@ export function ModalPlayerScore({
       <DialogContent className="border-slate-700 bg-slate-900 [&>button:last-child]:hidden">
         <DialogClose asChild>
           <button
-            className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100"
+            className="absolute top-4 right-4 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100"
             aria-label="Close"
           >
             <X className="h-5 w-5 text-gray-400" />

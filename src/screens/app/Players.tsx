@@ -21,6 +21,7 @@ export function Players() {
     const unsubscribe = startListenerScorePlayers(month);
 
     return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [month]);
 
   const sortPlayers = (a: IPlayer, b: IPlayer, prop: keyof IPlayer) => {

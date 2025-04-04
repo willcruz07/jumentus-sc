@@ -48,7 +48,7 @@ export const useMatches: UseBoundStore<StoreApi<TState & TActions>> = create<TSt
         await addDoc(docRef, {
           votesBestPlayers: [],
           votesWorstPlayers: [],
-          inProgress: false,
+          inProgress: true,
           waitingForEvent: true,
           inMatchingVote: false,
           date: Timestamp.fromDate(data.date) as any,

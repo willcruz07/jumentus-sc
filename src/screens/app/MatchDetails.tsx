@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import clsx from 'clsx';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { CircleMinus, CirclePlus, Pause, Play } from 'lucide-react';
@@ -50,7 +51,7 @@ export function MatchDetails() {
   const setTeamScoresOnTheDay = useMatches((state) => state.setTeamScoresOnTheDay);
   const playersScoreOnTheDay = useMatches((state) => state.playersScoreOnTheDay);
 
-  const { currentUser } = useAuth();
+  const { currentUser, emailsAdmins } = useAuth();
 
   const [modalDefineMatch, setModalDefineMatch] = useState(false);
   const [search, setSearch] = useState('');
@@ -69,12 +70,13 @@ export function MatchDetails() {
     if (match) {
       setMatchInProgress(match);
     }
+
+    if (match == null) setMatchInProgress(undefined);
   }, [match]);
 
   useEffect(() => {
     let timerId = null;
     if (matchInProgress?.startTime) {
-      console.log(matchInProgress);
       const calcTime = () => {
         const now = dayjs();
         const diff = now.diff(matchInProgress?.startTime);
@@ -84,7 +86,6 @@ export function MatchDetails() {
         return `${minutes}:${seconds}`;
       };
 
-      console.log('START');
       timerId = setInterval(() => {
         setTimer(calcTime());
       }, 1000);
@@ -102,6 +103,7 @@ export function MatchDetails() {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       timerId && clearInterval(timerId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchInProgress?.startTime, matchInProgress?.started]);
 
   useEffect(() => {
@@ -112,6 +114,8 @@ export function MatchDetails() {
   }, []);
 
   const handleExecutionTimer = () => {
+    if (!isAdmin) return;
+
     if (matchInProgress?.started) {
       return pauseMatch();
     }
@@ -124,6 +128,7 @@ export function MatchDetails() {
   };
 
   const handleDefineGoals = (goals: [number, number]) => {
+    if (!isAdmin) return;
     setGoals(goals);
   };
 
@@ -150,8 +155,12 @@ export function MatchDetails() {
   };
 
   const isAdmin = useMemo(
-    () => currentUser?.email?.includes('wellenchorao') || currentUser?.email?.includes('will@'),
-    [currentUser],
+    () =>
+      currentUser?.email?.includes('wellenchorao') ||
+      currentUser?.email?.includes('admin') ||
+      emailsAdmins.includes(currentUser?.email ?? ''),
+
+    [currentUser, emailsAdmins],
   );
 
   if (!inMatchingVote && !inProgress && !waitingForEvent) {
@@ -176,15 +185,19 @@ export function MatchDetails() {
     <MainContainer>
       <Header canGoBack />
       <div className="mt-8 flex w-full max-w-prose flex-col self-center">
-        {!matchInProgress && (
-          <Button label="Definir confronto" onClick={() => setModalDefineMatch(true)} />
+        {!matchInProgress && isAdmin && (
+          <Button
+            className="my-2 h-14 bg-green-800 text-lg font-bold hover:bg-green-900"
+            label="Definir confronto"
+            onClick={() => isAdmin && setModalDefineMatch(true)}
+          />
         )}
 
         {inProgress && matchInProgress && (
           <>
             <div className="mt-2 mb-4 flex w-full flex-col items-center justify-center rounded-lg border border-gray-800 bg-gray-900 py-6 shadow-sm">
               <div className="flex flex-col items-center">
-                {
+                {isAdmin && (
                   <button
                     type="button"
                     onClick={handleExecutionTimer}
@@ -192,14 +205,14 @@ export function MatchDetails() {
                   >
                     {matchInProgress?.started ? <Pause /> : <Play />}
                   </button>
-                }
-                <h3 className="mb-4 text-center text-2xl text-gray-400">{timer}</h3>
+                )}
+                <h3 className="mb-4 text-center text-3xl font-bold text-gray-400">{timer}</h3>
               </div>
 
               <div className="flex flex-row items-center self-center">
                 <div className="flex flex-row gap-3">
                   <div className="flex flex-col gap-3 text-gray-600">
-                    {
+                    {isAdmin && (
                       <button
                         type="button"
                         onClick={() => {
@@ -209,8 +222,8 @@ export function MatchDetails() {
                       >
                         <CirclePlus />
                       </button>
-                    }
-                    {
+                    )}
+                    {isAdmin && (
                       <button
                         type="button"
                         onClick={() => {
@@ -224,16 +237,17 @@ export function MatchDetails() {
                       >
                         <CircleMinus />
                       </button>
-                    }
+                    )}
                   </div>
-                  <div className="rounded-lg bg-gray-800 p-2">
+                  <div className="rounded-lg bg-gray-800">
                     <div
-                      style={{
-                        backgroundColor: getTeamColors(matchInProgress.teams?.[0]),
-                      }}
-                      className={`flex h-full w-10 items-center justify-center rounded-lg`}
+                      className={clsx(`flex h-16 w-16 items-center justify-center rounded-lg`, {
+                        'bg-blue-800': matchInProgress.teams?.[0] == 'team_1',
+                        'bg-yellow-600': matchInProgress.teams?.[0] == 'team_2',
+                        'bg-pink-700': matchInProgress.teams?.[0] == 'team_3',
+                      })}
                     >
-                      <h1 className="text-xl font-black text-slate-200">
+                      <h1 className="text-2xl font-black text-slate-200">
                         {matchInProgress?.teams?.[0].toString().split('_')[1]}
                       </h1>
                     </div>
@@ -257,20 +271,21 @@ export function MatchDetails() {
                 </div>
 
                 <div className="flex flex-row gap-3">
-                  <div className="rounded-lg bg-gray-800 p-2">
+                  <div className="rounded-lg bg-gray-800">
                     <div
-                      style={{
-                        backgroundColor: getTeamColors(matchInProgress.teams?.[1]),
-                      }}
-                      className={`flex h-full w-10 items-center justify-center rounded-lg`}
+                      className={clsx(`flex h-16 w-16 items-center justify-center rounded-lg`, {
+                        'bg-blue-800': matchInProgress.teams?.[1] == 'team_1',
+                        'bg-yellow-600': matchInProgress.teams?.[1] == 'team_2',
+                        'bg-pink-700': matchInProgress.teams?.[1] == 'team_3',
+                      })}
                     >
-                      <h1 className="text-xl font-black text-slate-200">
+                      <h1 className="text-2xl font-black text-slate-200">
                         {matchInProgress.teams?.[1].toString().split('_')[1]}
                       </h1>
                     </div>
                   </div>
                   <div className="flex flex-col gap-3 text-gray-600">
-                    {
+                    {isAdmin && (
                       <button
                         type="button"
                         onClick={() => {
@@ -280,8 +295,8 @@ export function MatchDetails() {
                       >
                         <CirclePlus />
                       </button>
-                    }
-                    {
+                    )}
+                    {isAdmin && (
                       <button
                         type="button"
                         onClick={() => {
@@ -295,15 +310,15 @@ export function MatchDetails() {
                       >
                         <CircleMinus />
                       </button>
-                    }
+                    )}
                   </div>
                 </div>
               </div>
             </div>
 
-            {matchInProgress && (
+            {matchInProgress && isAdmin && (
               <Button
-                className="my-2"
+                className="my-2 h-14 bg-red-800 text-lg font-bold hover:bg-red-900"
                 label="Finalizar partida"
                 onClick={() => setModalFinishMatch(true)}
               />
@@ -324,6 +339,7 @@ export function MatchDetails() {
                       key={key}
                       {...team}
                       onClick={() => {
+                        if (!isAdmin) return;
                         setTeamSelected({
                           draw: team.draw,
                           goalsConceded: team.goalsConceded,
@@ -358,16 +374,21 @@ export function MatchDetails() {
             )}
 
             {playersScoreOnTheDay && (
-              <div className="mt-4 flex flex-col gap-2">
+              <div className="mt-4 flex flex-col gap-4">
                 <h1 className="text-lg text-gray-300">Jogadores</h1>
                 {playersScoreOnTheDay
                   ?.filter((player) => player.name.toLowerCase().includes(search.toLowerCase()))
-                  ?.sort((a, b) => a.name.localeCompare(b.name))
+                  // ?.sort((a, b) => a.name.localeCompare(b.name))
+                  ?.sort(
+                    (a, b) =>
+                      getPlayerTeam(a.fullName)?.localeCompare(getPlayerTeam(b.fullName) ?? '') ??
+                      1,
+                  )
                   ?.map((player) => {
                     return (
                       <PlayerHistoryCard
                         onEditPlayer={() => {
-                          // if (!isAdmin) return;
+                          if (!isAdmin) return;
                           setPlayerSelected({ ...player });
                           setModalPlayerScore(true);
                         }}
@@ -380,7 +401,7 @@ export function MatchDetails() {
                         tackles={player.tackles}
                         manOfTheMatch={0}
                         shitOfTheMatch={0}
-                        teamColor={getTeamColors(getPlayerTeam(player.fullName) as keyof ITeams)}
+                        teamColor={getPlayerTeam(player.fullName)?.split('_')[1] as string}
                       />
                     );
                   })}

@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 import { ITeamDetails } from '@/store/useMatches/types';
 
 interface IProps extends ITeamDetails {
@@ -7,7 +9,6 @@ interface IProps extends ITeamDetails {
 }
 
 export function TeamsCard({
-  teamColor,
   draw,
   goalsConceded,
   goalsScored,
@@ -16,10 +17,17 @@ export function TeamsCard({
   loss,
   win,
 }: IProps) {
-  console.log(teamColor);
   return (
     <div
-      className={`bg-${teamColor} flex flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm`}
+      onClick={() => onClick && onClick()}
+      className={clsx(
+        `flex cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm hover:opacity-80`,
+        {
+          'bg-blue-800': numberTeam == '1',
+          'bg-yellow-600': numberTeam == '2',
+          'bg-pink-700': numberTeam == '3',
+        },
+      )}
     >
       <div className={`flex p-4`}>
         <h1 className="text-2xl font-black text-white">{`Time - ${numberTeam}`}</h1>

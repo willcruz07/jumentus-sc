@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { CircleMinus, CirclePlus, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -30,7 +31,6 @@ export function ModalMatchScores({
   draw,
   win,
   numberTeam,
-  teamColor,
   goalsConceded,
   goalsScored,
   goalsDifference,
@@ -78,7 +78,7 @@ export function ModalMatchScores({
       <DialogContent className="border-slate-700 bg-slate-900 [&>button:last-child]:hidden">
         <DialogClose asChild>
           <button
-            className="absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100"
+            className="absolute top-4 right-4 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100"
             aria-label="Close"
           >
             <X className="h-5 w-5 text-gray-400" />
@@ -92,10 +92,16 @@ export function ModalMatchScores({
         <div className="flex flex-col">
           <div className="mb-6 flex flex-col items-center gap-2">
             <div
-              style={{ backgroundColor: teamColor }}
-              className="flex items-center justify-center rounded-full px-9 py-6"
+              className={clsx(
+                'flex items-center justify-center rounded-full border-2 border-slate-700 px-9 py-6',
+                {
+                  'bg-blue-800': numberTeam == '1',
+                  'bg-yellow-600': numberTeam == '2',
+                  'bg-pink-700': numberTeam == '3',
+                },
+              )}
             >
-              <h2 className="text-3xl font-bold text-slate-100">{numberTeam}</h2>
+              <h2 className="text-5xl font-bold text-slate-100">{numberTeam}</h2>
             </div>
           </div>
 
@@ -137,7 +143,7 @@ export function ModalMatchScores({
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 font-bold text-slate-200">{'GOLS A FAVOR'}</h1>
+              <h1 className="mb-1 text-center font-bold text-slate-200">{'GOLS A FAVOR'}</h1>
               <div className="flex gap-3">
                 <button type="button" onClick={() => onChangeValue('goalsScored', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
@@ -149,7 +155,7 @@ export function ModalMatchScores({
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 font-bold text-slate-200">{'GOLS CONTRA'}</h1>
+              <h1 className="mb-1 text-center font-bold text-slate-200">{'GOLS CONTRA'}</h1>
               <div className="flex gap-3">
                 <button type="button" onClick={() => onChangeValue('goalsConceded', 'subtract')}>
                   <CircleMinus className="text-slate-400" />
@@ -161,7 +167,7 @@ export function ModalMatchScores({
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h1 className="mb-1 font-bold text-slate-200">{'SALDO DE GOLS'}</h1>
+              <h1 className="mb-1 text-center font-bold text-slate-200">{'SALDO DE GOLS'}</h1>
               <div className="flex gap-3">
                 <h1 className="text-3xl font-bold text-slate-300">{goalsDiff}</h1>
               </div>
@@ -170,9 +176,9 @@ export function ModalMatchScores({
         </div>
 
         <div className="mt-8 flex justify-center gap-4">
-          <Button className="w-1/3" label="Cancelar" variant="secondary" onClick={onCancel} />
+          {/* <Button className="w-1/3" label="Cancelar" variant="secondary" onClick={onCancel} /> */}
           <Button
-            className="w-1/3"
+            className="w-full"
             label="Confirmar"
             onClick={() =>
               onConfirm({

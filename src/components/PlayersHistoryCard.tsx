@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
+import clsx from 'clsx';
+
 import Logo from '@/assets/logo.png';
 import { IPlayersScoreOnTheDay } from '@/store/useMatches/types';
 
@@ -22,7 +24,14 @@ export function PlayerHistoryCard({
   return (
     <div
       onClick={() => (onClick && onClick(name)) || (onEditPlayer && onEditPlayer())}
-      className={`flex bg-${teamColor} flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm hover:opacity-80`}
+      className={clsx(
+        `flex cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-800 shadow-sm hover:opacity-80`,
+        {
+          'bg-blue-800': teamColor == '1',
+          'bg-yellow-600': teamColor == '2',
+          'bg-pink-700': teamColor == '3',
+        },
+      )}
     >
       <div className="flex flex-row justify-between overflow-hidden">
         <img
@@ -43,7 +52,7 @@ export function PlayerHistoryCard({
 
       <div
         // onClick={() => onEditPlayer && onEditPlayer()}
-        className="flex w-full flex-row gap-3 border border-gray-800 bg-gray-900 p-2 shadow-sm hover:bg-gray-950"
+        className="flex w-full flex-row gap-3 border border-gray-800 bg-gray-900 p-2 shadow-sm"
       >
         <div className="grid w-full grid-cols-4">
           <div className="flex flex-col items-center gap-1">

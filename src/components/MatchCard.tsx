@@ -1,5 +1,6 @@
+import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ROUTES } from '@/paths';
@@ -9,11 +10,15 @@ import { useMatches } from '@/store/useMatches';
 export function MatchCard() {
   const navigate = useNavigate();
 
-  const { startListenerOfOnGoingMatches, waitingForEvent, inProgress, date, inMatchingVote } =
-    useMatches();
-  const { currentUser } = useAuth();
-
-  const [matchInProgress, setMatchInProgress] = useState(false);
+  const {
+    startListenerOfOnGoingMatches,
+    matchInProgress,
+    waitingForEvent,
+    inProgress,
+    date,
+    inMatchingVote,
+  } = useMatches();
+  const { currentUser, emailsAdmins } = useAuth();
 
   useEffect(() => {
     const unsubscribe = startListenerOfOnGoingMatches();
@@ -22,28 +27,27 @@ export function MatchCard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    setMatchInProgress(!(!inProgress && !waitingForEvent));
-  }, [waitingForEvent, inProgress]);
-
   const title = useMemo(() => {
     if (inMatchingVote) {
       return 'Acessar votação';
     }
 
-    return matchInProgress ? 'Partida' : 'Criar partida';
-  }, [matchInProgress, inMatchingVote]);
+    return inProgress ? 'Partida' : 'Criar partida';
+  }, [inProgress, inMatchingVote]);
 
   const handleNavigate = useCallback(() => {
-    if (matchInProgress || inMatchingVote) {
+    if (inProgress || inMatchingVote) {
       return navigate(ROUTES.AUTHENTICATED.MATCH_DETAILS);
     }
     return navigate(ROUTES.AUTHENTICATED.MATCH_CREATE);
-  }, [matchInProgress, inMatchingVote, navigate]);
+  }, [inProgress, inMatchingVote, navigate]);
 
   const isAdmin = useMemo(
-    () => currentUser?.email?.includes('wellenchorao@gmail.com'),
-    [currentUser],
+    () =>
+      currentUser?.email?.includes('wellenchorao@gmail.com') ||
+      currentUser?.email?.includes('admin') ||
+      emailsAdmins.includes(currentUser?.email ?? ''),
+    [currentUser, emailsAdmins],
   );
 
   if (!inMatchingVote && !inProgress && !waitingForEvent && !isAdmin) return null;
@@ -65,28 +69,38 @@ export function MatchCard() {
         </>
       )}
 
-      {matchInProgress && !waitingForEvent && (
+      {matchInProgress && inProgress && !waitingForEvent && (
         <div className="mt-3 flex flex-row items-center self-center">
-          <div className="rounded-lg bg-gray-800 p-2">
-            <div className="h-10 w-10 rounded-lg bg-red-600" />
+          <div className="rounded-lg bg-gray-800 p-1">
+            <div
+              className={clsx(`flex h-14 w-14 items-center justify-center rounded-sm`, {
+                'bg-blue-800': matchInProgress?.teams?.[0] == 'team_1',
+                'bg-yellow-600': matchInProgress?.teams?.[0] == 'team_2',
+                'bg-pink-700': matchInProgress?.teams?.[0] == 'team_3',
+              })}
+            />
           </div>
 
           <div className="flex items-center px-6">
-            <h1 className="text-4xl font-bold">1</h1>
+            <h1 className="text-6xl font-bold text-slate-200">{matchInProgress?.goals[0]}</h1>
 
             <div className="flex flex-col items-center px-4">
               <div className="flex flex-row gap-2">
-                <span className="font-sans text-2xl font-semibold">x</span>
+                <span className="font-sans text-2xl font-semibold text-slate-300">x</span>
               </div>
-
-              <h3 className="mt-1 text-center font-mono text-sm text-gray-500">07:00</h3>
             </div>
 
-            <h1 className="text-4xl font-bold">1</h1>
+            <h1 className="text-6xl font-bold text-slate-200">{matchInProgress?.goals[1]}</h1>
           </div>
 
-          <div className="rounded-lg bg-gray-800 p-2">
-            <div className="h-10 w-10 rounded-lg bg-blue-600" />
+          <div className="rounded-lg bg-gray-800 p-1">
+            <div
+              className={clsx(`flex h-14 w-14 items-center justify-center rounded-sm`, {
+                'bg-blue-800': matchInProgress?.teams?.[1] == 'team_1',
+                'bg-yellow-600': matchInProgress?.teams?.[1] == 'team_2',
+                'bg-pink-700': matchInProgress?.teams?.[1] == 'team_3',
+              })}
+            />
           </div>
         </div>
       )}

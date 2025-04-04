@@ -14,6 +14,7 @@ export function Routes() {
     const unsubscribe = checkAuth();
 
     return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading.checkAuth) return <div className="h-dvh w-dvw bg-slate-950" />;

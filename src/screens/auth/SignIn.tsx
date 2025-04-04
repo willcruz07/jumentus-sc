@@ -30,7 +30,6 @@ export function SignIn() {
       email: 'guest@jumentussc.com',
       password: 'Juve@2024',
     }).then(() => {
-      console.log('home');
       return navigate(ROUTES.AUTHENTICATED.HOME);
     });
   };

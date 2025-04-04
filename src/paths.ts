@@ -10,6 +10,7 @@ const ROUTES = {
     PLAYERS: '/players',
     MATCH_DETAILS: '/match-details',
     MATCH_CREATE: '/match-create',
+    ADD_ADMINS: '/add-admins',
   },
 };
 
@@ -19,6 +20,7 @@ const KEYS_COOKIES = {
 
 const FIREBASE = {
   COLLECTIONS: {
+    HAS_PERMISSION: 'hasPermission',
     PLAYERS: 'players',
     MATCHES: 'matches',
   },

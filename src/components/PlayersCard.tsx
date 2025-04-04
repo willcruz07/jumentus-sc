@@ -15,7 +15,7 @@ export function PlayersCard({
 }: IPlayer) {
   return (
     <div className="shadow-s flex flex-col items-center gap-4 rounded-lg border border-gray-800 bg-gray-900 pt-4">
-      <div className="grid w-full grid-cols-3">
+      <div className="grid w-full grid-cols-3 px-4">
         <div className="flex flex-col items-center gap-2">
           <h5 className="text-center font-sans text-sm font-bold break-words text-slate-500">
             Man of the match

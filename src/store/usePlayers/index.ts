@@ -107,10 +107,6 @@ export const usePlayers: UseBoundStore<StoreApi<TState & TActions>> = create<TSt
               (item) => item.fullName.toLowerCase() === player.fullName.toLowerCase(),
             );
 
-            if (player.fullName == 'Luiz Guilherme') {
-              console.log(doc.id);
-            }
-
             if (dataIndex !== -1) {
               data[dataIndex].assists += player.assists;
               data[dataIndex].goals += player.goals;

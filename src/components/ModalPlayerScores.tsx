@@ -48,6 +48,22 @@ export function ModalPlayerScore({
   };
 
   useEffect(() => {
+    if (!isVisible) return;
+
+    window.history.pushState(null, '', window.location.href);
+
+    const handlePopState = () => {
+      onCancel();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isVisible]);
+
+  useEffect(() => {
     if (isVisible) {
       setPlayerData({
         assists: assists,

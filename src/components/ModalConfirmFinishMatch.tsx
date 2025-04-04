@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+import { useEffect } from 'react';
 
 import { Button } from '@/components/Button';
 
@@ -11,6 +12,22 @@ interface IProps {
 }
 
 export function ModalConfirmFinishMatch({ isVisible, onCancel, onConfirm }: IProps) {
+  useEffect(() => {
+    if (!isVisible) return;
+
+    window.history.pushState(null, '', window.location.href);
+
+    const handlePopState = () => {
+      onCancel();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isVisible]);
+
   return (
     <Dialog modal onOpenChange={() => onCancel()} open={isVisible}>
       <DialogContent className="border-slate-700 bg-slate-900 [&>button:last-child]:hidden">

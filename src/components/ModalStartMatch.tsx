@@ -27,6 +27,22 @@ export function ModalDefineMatch({ isVisible, onCancel, onConfirm }: IProps) {
     }
   }, [isVisible]);
 
+  useEffect(() => {
+    if (!isVisible) return;
+
+    window.history.pushState(null, '', window.location.href);
+
+    const handlePopState = () => {
+      onCancel();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isVisible]);
+
   const handleStartMatches = () => {
     if (time1 && time2) {
       setMatch([time1, time2]);
